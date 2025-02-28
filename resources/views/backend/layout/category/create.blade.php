@@ -21,7 +21,7 @@
                     enctype="multipart/form-data">
                     @csrf
                     <div class="row">
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-12 col-12">
                             <div class="form-group">
                                 <label for="title">Title</label>
                                 <input type="text" id="title" class="form-control"
@@ -33,7 +33,7 @@
                         </div>
                        
 
-                        <div class="col-md-4 col-12">
+                        <div class="col-md-12 col-12">
                             <div class="form-group">
                                 <label for="image">Featured Image</label>
                                 <input class="form-control dropify" accept="image/*" type="file" name="image">
@@ -51,7 +51,6 @@
             </div>
         </div>
     </div>
-
     @push('script')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>

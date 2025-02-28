@@ -164,6 +164,15 @@ $admin=App\Models\SystemSetting::first();
                         </a>
                     </li>
 
+                    <li class="{{ (request()->route()->parameter('section') == 'home_pets_helth' && request()->route()->parameter('page') == 'homepage') ? 'active' : '' }}">
+                        <a class="d-flex align-items-center" href="{{ route('cms.get', ['section' => 'home_pets_helth', 'page' => 'homepage']) }}">
+                            <i data-feather="circle"></i>
+                            <span class="menu-item text-truncate" data-i18n="Chartjs">
+                                Pets Health
+                            </span>
+                        </a>
+                    </li>
+
                     <li class="{{ (request()->route()->parameter('section') == 'home_pets_nutrition' && request()->route()->parameter('page') == 'homepage') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('cms.get', ['section' => 'home_pets_nutrition', 'page' => 'homepage']) }}">
                             <i data-feather="circle"></i>
@@ -182,14 +191,29 @@ $admin=App\Models\SystemSetting::first();
                         </a>
                     </li>
 
-                    <li class="{{ (request()->route()->parameter('section') == 'home_pets_helth' && request()->route()->parameter('page') == 'homepage') ? 'active' : '' }}">
-                        <a class="d-flex align-items-center" href="{{ route('cms.get', ['section' => 'home_pets_helth', 'page' => 'homepage']) }}">
+
+
+                    <!-- update code testimonial and contact us -->
+
+                    <li class="{{ (request()->route()->parameter('section') == 'home_testimonial_index' && request()->route()->parameter('page') == 'homepage_testimonial') ? 'active' : '' }}">
+                        <a class="d-flex align-items-center" href="{{ route('cms.get', ['section' => 'home_testimonial_index', 'page' => 'homepage_testimonial']) }}">
                             <i data-feather="circle"></i>
                             <span class="menu-item text-truncate" data-i18n="Chartjs">
-                                Pets Health
+                               Testimonial
                             </span>
                         </a>
                     </li>
+
+                    <li class="{{ (request()->route()->parameter('section') == 'home_contact' && request()->route()->parameter('page') == 'homepage') ? 'active' : '' }}">
+                        <a class="d-flex align-items-center" href="{{ route('cms.get', ['section' => 'home_contact', 'page' => 'homepage']) }}">
+                            <i data-feather="circle"></i>
+                            <span class="menu-item text-truncate" data-i18n="Chartjs">
+                               Contact Us
+                            </span>
+                        </a>
+                    </li>
+
+                    
                 </ul>
             </li>
            
@@ -352,15 +376,6 @@ $admin=App\Models\SystemSetting::first();
                         </a>
                     </li>
 
-                   <li class="{{ (request()->route()->parameter('section') == 'pet_wellness_together' && request()->route()->parameter('page') == 'from_the_vet') ? 'active' : '' }}">
-                        <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'from_the_vet','section' => 'pet_wellness_together']) }}">
-                            <i data-feather="circle"></i>
-                            <span class="menu-item text-truncate" data-i18n="Chartjs">
-                            Pet Wellness
-                            </span>
-                        </a>
-                    </li>
-
                     <li class="{{ (request()->route()->parameter('section') == 'not_pet_nutration' && request()->route()->parameter('page') == 'from_the_vet') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'from_the_vet','section' => 'not_pet_nutration']) }}">
                             <i data-feather="circle"></i>
@@ -369,6 +384,9 @@ $admin=App\Models\SystemSetting::first();
                             </span>
                         </a>
                     </li>
+                   
+
+                    
                     <li class="{{ (request()->route()->parameter('section') == 'why_choose_index' && request()->route()->parameter('page') == 'from_the_vet_choose_block') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'from_the_vet_choose_block','section' => 'why_choose_index']) }}">
                             <i data-feather="circle"></i>
@@ -387,7 +405,14 @@ $admin=App\Models\SystemSetting::first();
                         </a>
                     </li>
 
-                    
+                    <li class="{{ (request()->route()->parameter('section') == 'pet_wellness_together' && request()->route()->parameter('page') == 'from_the_vet') ? 'active' : '' }}">
+                        <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'from_the_vet','section' => 'pet_wellness_together']) }}">
+                            <i data-feather="circle"></i>
+                            <span class="menu-item text-truncate" data-i18n="Chartjs">
+                            Pet Wellness
+                            </span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <!-- About Section -->
@@ -494,14 +519,14 @@ $admin=App\Models\SystemSetting::first();
                     </span>
                 </a>
                 <ul class="menu-content">
-                    <li class="{{ request()->routeIs('general.setting') ? 'active' : '' }}">
+                    <!-- <li class="{{ request()->routeIs('general.setting') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('general.setting') }}">
                             <i data-feather="circle"></i>
                             <span class="menu-item text-truncate" data-i18n="Apex">
                                 General Setting
                             </span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="{{ request()->routeIs('admin.setting') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('admin.setting') }}">
                             <i data-feather="circle"></i>
@@ -528,7 +553,7 @@ $admin=App\Models\SystemSetting::first();
                     </li>
                 </ul>
             </li>
-            <li class=" nav-item">
+            <!-- <li class=" nav-item">
                 <a class="d-flex align-items-center" href="#">
                     <i class="fa-solid fa-gear"></i>
                     <span class="menu-title text-truncate" data-i18n="Charts">
@@ -553,7 +578,7 @@ $admin=App\Models\SystemSetting::first();
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> -->
         </ul>
     </div>
 </div>

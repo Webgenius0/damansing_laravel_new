@@ -34,7 +34,7 @@
                                 <!-- Mail Mailer -->
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <label for="mail_mailer">Mail Mailer</label>
+                                        <label for="mail_mailer"><strong>Mail Mailer</strong></label>
                                         <input type="text" id="mail_mailer" class="form-control"
                                                value="{{ env('MAIL_MAILER') }}" name="mail_mailer" />
                                         @error('mail_mailer')
@@ -46,7 +46,7 @@
                                 <!-- Mail Host -->
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <label for="mail_host">Mail Host</label>
+                                        <label for="mail_host"><strong>Mail Host</strong></label>
                                         <input type="text" id="mail_host" class="form-control"
                                                value="{{ env('MAIL_HOST') }}" name="mail_host" />
                                         @error('mail_host')
@@ -58,7 +58,7 @@
                                 <!-- Mail Port -->
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <label for="mail_port">Mail Port</label>
+                                        <label for="mail_port"><strong>Mail Port</strong></label>
                                         <input type="text" id="mail_port" class="form-control"
                                                value="{{ env('MAIL_PORT') }}" name="mail_port" />
                                         @error('mail_port')
@@ -70,7 +70,7 @@
                                 <!-- Mail Username -->
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <label for="mail_username">Mail Username</label>
+                                        <label for="mail_username"><strong>Mail Username</strong></label>
                                         <input type="text" id="mail_username" class="form-control"
                                                value="{{ env('MAIL_USERNAME') }}" name="mail_username" />
                                         @error('mail_username')
@@ -82,7 +82,7 @@
                                 <!-- Mail Password -->
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <label for="mail_password">Mail Password</label>
+                                        <label for="mail_password"><strong>Mail Password</strong></label>
                                         <input type="text" id="mail_password" class="form-control"
                                                value="{{ env('MAIL_PASSWORD') }}" name="mail_password" />
                                         @error('mail_password')
@@ -94,7 +94,7 @@
                                 <!-- Mail Encryption -->
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <label for="mail_encryption">Mail Encryption</label>
+                                        <label for="mail_encryption"><strong>Mail Encryption</strong></label>
                                         <input type="text" id="mail_encryption" class="form-control"
                                                value="{{ env('MAIL_ENCRYPTION') }}" name="mail_encryption" />
                                         @error('mail_encryption')
@@ -106,7 +106,7 @@
                                 <!-- Mail From Address -->
                                 <div class="col-md-6 col-12">
                                     <div class="form-group">
-                                        <label for="mail_from_address">Mail From Address</label>
+                                        <label for="mail_from_address"><strong>Mail From Address</strong></label>
                                         <input type="text" id="mail_from_address" class="form-control"
                                                value="{{ env('MAIL_FROM_ADDRESS') }}" name="mail_from_address" />
                                         @error('mail_from_address')

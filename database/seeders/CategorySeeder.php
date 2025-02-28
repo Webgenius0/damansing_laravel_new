@@ -17,7 +17,7 @@ class CategorySeeder extends Seeder
         DB::table('categories')->insert([
             [
                 'title' => 'Dog Food',
-                'slug' => Str::slug('Dog Food'),
+                'slug' => Str::slug('Vegetarian'),
                 'status' => 'active',
                 'image' => 'dog-food.jpg',
                 'created_at' => now(),
@@ -25,7 +25,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'title' => 'Cat Food',
-                'slug' => Str::slug('Cat Food'),
+                'slug' => Str::slug('Non Vegetarian'),
                 'status' => 'active',
                 'image' => 'cat-food.jpg',
                 'created_at' => now(),

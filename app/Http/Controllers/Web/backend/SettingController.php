@@ -57,7 +57,8 @@ class SettingController extends Controller
 
     public function adminSettingUpdate(AdminSettingUpdateRequest $request)
     {
-        $title     = $request->input('title');
+        
+        $title     = $request->input('admin_title');
         $shortName = $request->input('system_short_name');
 
         if($request->hasFile('logo')){
@@ -78,7 +79,7 @@ class SettingController extends Controller
             $favicon = null;
         }
         
-        $copyright = $request->input('copyright');
+        $copyright = $request->input('copyright_text');
         
         return $this->settingServiceObj->adminSettingUpdate($title, $shortName, $logo, $miniLogo, $favicon, $copyright);
     }

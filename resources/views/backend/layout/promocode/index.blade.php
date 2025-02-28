@@ -24,7 +24,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    #
+                                    <h6>#</h6>
                                 </th>
                                 <th>Code</th>
                                 <th>Expires</th>

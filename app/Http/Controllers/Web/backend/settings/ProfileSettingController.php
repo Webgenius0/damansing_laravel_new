@@ -24,7 +24,7 @@ class ProfileSettingController extends Controller
     {
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'pet_name' => 'required|string|max:255',
             'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
         ]);
@@ -32,7 +32,7 @@ class ProfileSettingController extends Controller
         try {
 
             $user = Auth::user();
-            $user->name = $request->name;
+            $user->pet_name = $request->pet_name;
             $user->username = $request->username;
             $user->email = $request->email;
             $user->save();
@@ -76,7 +76,7 @@ class ProfileSettingController extends Controller
     public function updateProfilePicture(Request $request)
     {
         $request->validate([
-            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         try {

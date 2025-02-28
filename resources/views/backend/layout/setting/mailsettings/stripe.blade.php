@@ -34,7 +34,7 @@
                                 <!-- Mail Mailer -->
                                 <div class="col-md-12 col-12">
                                     <div class="form-group">
-                                    <label for="STRIPE_KEY" class="text-lg font-medium mb-2 md:w-1/4">STRIPE PUBLIC KEY</label>
+                                    <label for="STRIPE_KEY" class="text-lg font-medium mb-2 md:w-1/4"><strong>STRIPE PUBLIC KEY</strong></label>
                                 <input class="form-control @error('STRIPE_KEY') is-invalid @enderror md:w-3/4" type="text" name="STRIPE_KEY" id="STRIPE_KEY" value="{{ old('STRIPE_KEY', env('STRIPE_KEY')) }}" placeholder="Stripe Public Key">
                                 @error('STRIPE_KEY')
                                 <span class="text-red-500 block mt-1 text-sm">
@@ -47,10 +47,28 @@
                                 <!-- Mail Host -->
                                 <div class="col-md-12 col-12">
                                     <div class="form-group">
-                                    <label for="STRIPE_SECRET" class="text-lg font-medium mb-2 md:w-1/4">STRIPE SECRET KEY</label>
+                                    <label for="STRIPE_SECRET" class="text-lg font-medium mb-2 md:w-1/4"><strong>STRIPE SECRET KEY</strong></label>
                                 <input class="form-control @error('STRIPE_SECRET') is-invalid @enderror md:w-3/4" id="STRIPE_SECRET"
                                     name="STRIPE_SECRET" placeholder="Enter your Stripe Secret" type="text"
                                     value="{{ env('STRIPE_SECRET') }}">
+                                @error('STRIPE_SECRET')
+                                <span class="text-red-500 block mt-1 text-sm">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                                    </div>
+                                </div>
+
+
+
+                                <!-- web Hook -->
+
+                                <div class="col-md-12 col-12">
+                                    <div class="form-group">
+                                    <label for="webhook_secret" class="text-lg font-medium mb-2 md:w-1/4"><strong>STRIPE WEBHOOK</strong></label>
+                                <input class="form-control @error('STRIPE_SECRET') is-invalid @enderror md:w-3/4" id="STRIPE_SECRET"
+                                    name="webhook_secret" placeholder="Enter your Stripe Secret" type="text"
+                                    value="{{ env('webhook_secret') }}">
                                 @error('STRIPE_SECRET')
                                 <span class="text-red-500 block mt-1 text-sm">
                                     <strong>{{ $message }}</strong>

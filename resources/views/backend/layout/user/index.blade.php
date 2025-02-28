@@ -15,12 +15,10 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <div class="form-checkbox">
-                                        <input type="checkbox" class="form-check-input" id="select_all" onclick="select_all()">
-                                        <label class="form-check-label" for="select_all"></label>
-                                    </div>
+                                   <h6>#</h6>
                                 </th>
-                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Pet Name</th>
                                 <th>Email</th>
                                 <th>Status</th>
                                 
@@ -87,6 +85,12 @@
                             {
                                 data: 'username',
                                 name: 'username',
+                                orderable: false,
+                                searchable: false
+                            },
+                            {
+                                data: 'pet_name',
+                                name: 'pet_name',
                                 orderable: false,
                                 searchable: false
                             },
@@ -186,7 +190,7 @@
 
             // Status Change
             function statusChange(id) {
-                let url = '{{ route('user.status', ':id') }}';
+                let url = "{{ route('user.status', ':id') }}";
                 $.ajax({
                     type: "GET",
                     url: url.replace(':id', id),
