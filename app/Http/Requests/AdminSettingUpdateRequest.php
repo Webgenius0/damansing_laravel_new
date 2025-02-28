@@ -22,11 +22,13 @@ class AdminSettingUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'             => ['required', 'min:2'],
-            'system_short_name' => ['required', 'min:2'],
-            'logo'              => ['required', 'image', 'mimes:png,jpg,webp,jpeg'],
+            'admin_title'             => ['nullable'],
+            'system_short_name' => ['nullable', 'min:2'],
+            'logo'              => ['nullable', 'image', 'mimes:png,jpg,webp,jpeg'],
             'mini_logo'         => ['nullable', 'image', 'mimes:png,jpg,webp,jpeg'],
             'favicon'           => ['nullable', 'image', 'mimes:png,jpg'],
+            'copyright_text'    => ['nullable'],
+            'admin_logo'        => ['nullable', 'image', 'mimes:png,jpg,webp,jpeg'],
         ];
     }
 

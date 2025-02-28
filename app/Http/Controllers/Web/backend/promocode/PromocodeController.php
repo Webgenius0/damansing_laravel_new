@@ -36,6 +36,9 @@ class PromocodeController extends Controller
                
                 ->addColumn('bulk_check', function ($data) {
                     //return Helper::tableCheckbox($data->id);
+                    static $data=0;
+                    $data++;
+                    return '<h6>'.$data.'</h6>';
                     
                 })
                 ->addColumn('action', function ($data) {

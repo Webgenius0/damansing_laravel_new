@@ -17,6 +17,9 @@ enum Section: string
     case HOME_BLOCKS_CREATE = 'create_home_blocks';
     case Home = 'home';
     case uniquesection = 'uniquesection';
+    case HOME_CONTACT = 'home_contact';
+    case HOME_TESTIMONIAL_INDEX = 'home_testimonial_index';
+    case HOME_TESTIMONIAL_CREATE = 'create_testimonial';
 
 
     //Recipies and Nutrition

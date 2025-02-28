@@ -17,9 +17,9 @@
                         <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="first-name-column">Title</label>
-                                <input type="text" id="title" class="form-control"
-                                    value="{{ $setting->admin_title ?? '' }}" placeholder="System title" name="title" />
-                                @error('title')
+                                <input type="text" id="admin_title" class="form-control"
+                                    value="{{ $setting->admin_title ?? '' }}" placeholder="System title" name="admin_title" />
+                                @error('admin_title')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -36,20 +36,31 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                <label for="country">Copyright text</label>
+                                <input type="text" class="form-control" name="copyright_text" id="copyright_text"
+                                    value="{{ $setting->copyright_text ?? '' }}" placeholder="Copyright Text">
+                                @error('copyright_text')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-12">
                             <div class="form-group">
                                 <label for="country">System Logo</label>
                                 <input class="form-control dropify" type="file" name="logo"
                                     @isset($setting->admin_logo)
                                                    data-default-file="{{ asset($setting->admin_logo) }}"
                                                @endisset>
-                                @error('logo')
+                                @error('admin_logo')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-12">
+                        <!-- <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="country">Mini Logo</label>
                                 <input class="form-control dropify" type="file" name="mini_logo"
@@ -60,9 +71,9 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="col-md-6 col-12">
+                        <!-- <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="country">System Favicon</label>
                                 <input class="form-control dropify" type="file" name="favicon"
@@ -73,17 +84,8 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
-                        <div class="col-md-6 col-12">
-                            <div class="form-group">
-                                <label for="country">Copyright text</label>
-                                <input type="text" class="form-control" name="copyright" id="copyright"
-                                    value="{{ $setting->copyright_text ?? '' }}" placeholder="Copyright Text">
-                                @error('copyright')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
+                        </div> -->
+                        
                         <div class="col-12 mt-3">
                             <button type="submit" class="btn btn-primary mr-1">Submit</button>
                         </div>

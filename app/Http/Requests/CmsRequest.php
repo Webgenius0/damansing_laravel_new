@@ -38,6 +38,17 @@ class CmsRequest extends FormRequest
                 'btn_url' => ['nullable', 'string'],
                 'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             ],
+            // update code contact && testimonial
+            Section::HOME_CONTACT => [
+                'title' => ['required', 'string'],  
+                'description' => ['required', 'string'],
+                'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            ],
+            Section::HOME_TESTIMONIAL_CREATE=>[
+                'title' => ['required', 'string'],
+                'description' => ['required', 'string'],
+                'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            ],
 
             Section::Home_PETS_HELTH => [
                 'title' => ['required', 'string'],

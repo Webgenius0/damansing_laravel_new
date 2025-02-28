@@ -65,4 +65,5 @@ class FoodController extends Controller
             'data'    => $data,
         ]);
     }
+    
 }

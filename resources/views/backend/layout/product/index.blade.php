@@ -23,11 +23,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <div class="form-checkbox">
-                                        <input type="checkbox" class="form-check-input" id="select_all"
-                                            onclick="select_all()">
-                                        <label class="form-check-label" for="select_all"></label>
-                                    </div>
+                                    <h6>#</h6>
                                 </th>
                                 <th>Title</th>
                                 <th>Image</th>

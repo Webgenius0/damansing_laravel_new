@@ -88,7 +88,7 @@ class MailSettingsController extends Controller
         $request->validate([
             'STRIPE_KEY' => 'nullable|string',
             'STRIPE_SECRET' => 'nullable|string',
-            
+            'webhook_secret' => 'nullable|string',
         ]);
 
         try {
@@ -97,11 +97,11 @@ class MailSettingsController extends Controller
             $envContent = preg_replace([
                 '/STRIPE_KEY=(.*)\s/',
                 '/STRIPE_SECRET=(.*)\s/',
-                
+                '/webhook_secret=(.*)\s/',
             ], [
                 'STRIPE_KEY=' . $request->STRIPE_KEY . $lineBreak,
                 'STRIPE_SECRET=' . $request->STRIPE_SECRET . $lineBreak,
-                
+                'webhook_secret=' . $request->webhook_secret . $lineBreak,
             ], $envContent);
 
             if ($envContent !== null) {

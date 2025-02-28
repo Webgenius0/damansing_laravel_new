@@ -24,6 +24,7 @@
 
                 <div class="row">
 
+                <h5>Giving Back</h5>
                 <div class="col-md-12 col-12">
                         <div class="form-group">
                             <label for="metadata">Metadata</label>
@@ -34,7 +35,7 @@
                         </div>
                     </div>
                     <h4>UnMathch Customer Support</h4>
-                    <div class="col-md-6 col-12">
+                    <div class="col-md-12 col-12">
                         <div class="form-group">
                             <label for="title">Title</label>
                             <input type="text" id="title" class="form-control"
@@ -46,7 +47,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 col-12">
+                    <div class="col-md-12 col-12">
                         <div class="form-group">
                             <label for="description">Description</label>
                             <textarea type="text" id="description" class="form-control"
@@ -57,7 +58,7 @@
                         </div>
                     </div>
                     <h4>Join then movement</h4>
-                    <div class="col-md-6 col-12">
+                    <div class="col-md-12 col-12">
                         <div class="form-group">
                             <label for="sub_title"> Title</label>
                             <input type="text" id="sub_title" class="form-control"
@@ -69,7 +70,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 col-12">
+                    <div class="col-md-12 col-12">
                         <div class="form-group">
                             <label for="sub_description">Description</label>
                             <textarea type="text" id="sub_description" class="form-control"
