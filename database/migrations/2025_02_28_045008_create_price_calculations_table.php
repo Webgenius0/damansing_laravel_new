@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('price_calculations', function (Blueprint $table) {
             $table->id();
+            $table->integer('dog_weight')->nullable();
+            
+            $table->enum('gender' ,['male','female'])->default('male');
+            $table->enum('activity_level', ['moderate', 'high'])->default('moderate');
+            $table->string('calories');
+            $table->decimal('price', 8,2);
             $table->timestamps();
         });
     }

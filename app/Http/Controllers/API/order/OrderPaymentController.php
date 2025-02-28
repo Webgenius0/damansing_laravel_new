@@ -38,21 +38,21 @@ class OrderPaymentController extends Controller
 
             // Calculate subtotal
             $subtotal = $cart->cart_items->sum(function ($cartItem) {
-                return $cartItem->quantity * $cartItem->product->price;
+                return $cartItem->quantity * $cartItem->price;
             });
 
-            $shipping = 10.00;
+            $shipping = 00.00;
             $discount = 5.00;
             $total = $subtotal + $shipping - $discount;
 
             $orderSummary = [
                 'items' => $cart->cart_items->map(function ($cartItem) {
                     return [
-                        'product_id' => $cartItem->product->id,
+                        'product_id' => $cartItem->product_id,
                         'product_name' => $cartItem->product->title,
                         'quantity' => $cartItem->quantity,
-                        'price' => $cartItem->product->price,
-                        'total' => $cartItem->quantity * $cartItem->product->price,
+                        'price' => $cartItem->price,
+                        'total' => $cartItem->quantity * $cartItem->price,
                         'image' => $cartItem->product->image
                     ];
                 }),
@@ -104,35 +104,35 @@ class OrderPaymentController extends Controller
                 'discount' => $discount
             ]);
 
-          
-                foreach ($cart->cart_items as $cartItem) {
-                    OrderItem::create([
-                        'order_id' => $order->id,
-                        'product_id' => $cartItem->product_id,
-                        'quantity' => $cartItem->quantity,
-                        'price' => $cartItem->price,
-                        'total' => $cartItem->quantity * $cartItem->price
-                    ]);
-                }
-          
+
+            foreach ($cart->cart_items as $cartItem) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cartItem->product_id,
+                    'quantity' => $cartItem->quantity,
+                    'price' => $cartItem->price,
+                    'total' => $cartItem->quantity * $cartItem->price
+                ]);
+            }
+
 
             if ($paymentMethod === 'stripe') {
                 \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
                 $lineItems = [];
 
-             
-                    foreach ($cart->cart_items as $cartItem) {
-                        $lineItems[] = [
-                            'price_data' => [
-                                'currency' => 'inr',
-                                'product_data' => [
-                                    'name' => $cartItem->product->title,
-                                ],
-                                'unit_amount' => $cartItem->price * 100
+
+                foreach ($cart->cart_items as $cartItem) {
+                    $lineItems[] = [
+                        'price_data' => [
+                            'currency' => 'inr',
+                            'product_data' => [
+                                'name' => $cartItem->product->title,
                             ],
-                            'quantity' => $cartItem->quantity,
-                        ];
+                            'unit_amount' => $cartItem->price * 100
+                        ],
+                        'quantity' => $cartItem->quantity,
+                    ];
                 }
 
                 $lineItems[] = [
@@ -227,7 +227,7 @@ class OrderPaymentController extends Controller
 
     public function stripeWebhook(Request $request)
     {
-// change 
+        // change 
         Log::info('stripe webhook is running');
 
         $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
@@ -249,7 +249,7 @@ class OrderPaymentController extends Controller
                     $paymentIntent = $event->data->object;
                     $this->handlePaymentIntentFailed($paymentIntent);
                     break;
-                   
+
                 case 'checkout.session.completed':
                     $session = $event->data->object;
                     $this->handleCheckoutSessionCompleted($session);
@@ -270,7 +270,7 @@ class OrderPaymentController extends Controller
     protected function handlePaymentIntentSucceeded($paymentIntent)
     {
         $orderId = $paymentIntent->metadata->order_id;
-       
+
         $userId = $paymentIntent->metadata->user_id;
         $order = Order::find($orderId);
         if ($order) {
@@ -282,7 +282,7 @@ class OrderPaymentController extends Controller
         $cart = Cart::with('cart_items')->where('user_id', $userId)->first();
         $cart->cart_items()->delete();
 
- 
+
 
         Log::info("PaymentIntent succeeded for order .card dele {$orderId}");
     }
