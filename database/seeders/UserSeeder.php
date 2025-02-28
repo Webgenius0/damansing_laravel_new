@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
             'pet_name' => 'Kitty', 
             'email' => 'admin@admin.com',
             'password' => Hash::make('12345678'),
+            'role' => 'admin',
             'pet_dob' => null, 
         ]);
 

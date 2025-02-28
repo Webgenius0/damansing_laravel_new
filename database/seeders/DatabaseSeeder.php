@@ -20,11 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorySeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(PromoCodeSeeder::class);
-<<<<<<< HEAD
         $this->call(PriceCalculationSeeder::class);
-=======
-        $this->call(SystemSettingSeeder::class);
->>>>>>> a51e5aecfc799375822cff025758800663d6f149
         // User::factory(10)->create();
 
         // User::factory()->create([
