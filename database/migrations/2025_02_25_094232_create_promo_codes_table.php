@@ -16,12 +16,11 @@ return new class extends Migration
             $table->string('code')->unique(); 
             $table->enum('discount_type', ['percentage', 'fixed'])->default('percentage');
             $table->decimal('discount_value', 8, 2); 
-            $table->integer('minimum_order_value', 8, 2)->nullable(); 
+            $table->integer('minimum_order_value')->nullable(); // Fixed issue
             $table->integer('usage_limit')->default(1); 
             $table->integer('used_count')->default(0); 
             $table->dateTime('expires_at')->nullable(); 
             $table->timestamps();
-            
         });
     }
 
