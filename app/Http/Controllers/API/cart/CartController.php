@@ -78,7 +78,7 @@ class CartController extends Controller
             ], 'Product successfully added to cart.', 200);
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return $this->error([], 'Something went wrong', 500);
+            return $this->error(['Something went wrong'], $e->getMessage(), 500);
         }
     }
 

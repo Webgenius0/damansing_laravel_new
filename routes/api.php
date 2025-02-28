@@ -12,6 +12,7 @@ use App\Http\Controllers\API\CMS\DynamicPageController;
 use App\Http\Controllers\API\Order\OrderPaymentController;
 use App\Http\Controllers\API\promocode\PromoCodeController;
 use App\Http\Controllers\API\delivaryaddress\DeliveryAddressController;
+use App\Http\Controllers\API\Order\OrderHistoryController;
 
 // acccept all request new
 
@@ -81,6 +82,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
   Route::get('/order/summary', [OrderPaymentController::class, 'OrderSummury']);
 
   Route::post('/place/order', [OrderPaymentController::class, 'placeOrder']);
+
+  Route::get('/order/history', [OrderHistoryController::class, 'orderHistory']);
 });
 
 Route::controller(CmsController::class)->group(function () {
