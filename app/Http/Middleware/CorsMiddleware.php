@@ -13,10 +13,10 @@ class CorsMiddleware
         $response = $next($request);
 
         // Allow requests from specific origins
-        $response->headers->set('Access-Control-Allow-Origin', '*');  // Replace with your frontend URL
+        $response->headers->set('Access-Control-Allow-Origin', '*');  
         $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        $response->headers->set('Access-Control-Allow-Credentials', 'true');  // Optional, if you need cookies or credentials
+        $response->headers->set('Access-Control-Allow-Credentials', 'true');  
 
         // Handle preflight requests
         if ($request->getMethod() == "OPTIONS") {
