@@ -22,6 +22,17 @@ class CartController extends Controller
 
 
         try {
+
+            
+            $user = auth('api')->user();
+
+            $is_first = $user->orders->isEmpty();
+
+            if ($is_first) {
+                return $this->success($is_first, 'User first product try to purchase like sample product.', 200);
+            }
+
+
             $product = Product::find($id);
 
             if (!$product) {
@@ -75,6 +86,7 @@ class CartController extends Controller
                 'product_id' => $product->id,
                 'quantity' => $cartItem->quantity,
                 'price' => $price_calculation->price,
+
             ], 'Product successfully added to cart.', 200);
         } catch (Exception $e) {
             Log::error($e->getMessage());
@@ -161,8 +173,8 @@ class CartController extends Controller
             ->where('user_id', auth()->id())
             ->first();
 
-       
-        if (!$cart || $cart->cart_items->isEmpty()) { 
+
+        if (!$cart || $cart->cart_items->isEmpty()) {
             return $this->error('Cart is empty.', 404);
         }
 
@@ -175,7 +187,7 @@ class CartController extends Controller
         $cartItems = $cart->cart_items->map(function ($cartItem) use ($petType) {
             $product = $cartItem->product;
 
-            $availableQuantity = $cartItem->quantity ;
+            $availableQuantity = $cartItem->quantity;
             $totalPrice = $availableQuantity * $cartItem->price;
 
             return [
