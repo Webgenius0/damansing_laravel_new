@@ -127,4 +127,11 @@ class User extends Authenticatable implements JWTSubject
         ->limit(20)
         ->get();
     }
+
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'id');
+    }
+
 }
