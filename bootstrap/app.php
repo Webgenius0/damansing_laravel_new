@@ -30,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         'stripe/webhook', 
     ]);
 
-    $middleware->prepend(CorsMiddleware::class);
+    // $middleware->prepend(CorsMiddleware::class);
 })
 ->withExceptions(function (Exceptions $exceptions) {
     //
