@@ -1,0 +1,162 @@
+@extends('backend.app')
+@push('style')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" />
+<style>
+    /* {{-- CKEditor CDN --}} */
+
+    .ck-editor__editable_inline {
+        min-height: 160px;
+    }
+</style>
+
+@endpush
+@section('title', 'Create New Card')
+@section('content')
+<div>
+    <div class="app-content content ">
+        <!-- General setting Form section start -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Recipes and Nutrition Header Section</h3>
+
+            </div>
+            <div class="card-body">
+                <form class="form" method="POST" action="{{  route('cms.createOrUpdateForm', ['page' => 'from_the_vet_choose_block','section' => 'create_choose_blocks']) }}"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <input type="text" hidden name="" id="" value="unique">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input type="text" id="title" class="form-control"
+                                    value="{{ old('title', $cmsData->title ?? 'N/A' )}}" placeholder="Welcome Title" name="title" />
+                                @error('title')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="sub_title">Sub Title</label>
+                                <input type="text" id="sub_title" class="form-control"
+                                    value="{{ old('sub_title', $cmsData->sub_title ?? 'N/A' )}}" placeholder="Welcome Title" name="title" />
+                                @error('title')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea type="text" id="description" class="form-control"
+                                    placeholder="Home Banner Description" name="description" rows="8" >{{ old('description', $cmsData->description ?? 'N/A' )}}></textarea>
+                                @error('description')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-primary mr-1">Submit</button>
+                            <a href="{{ route('admin.category.index') }}" class="btn btn-outline-danger">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Card Section -->
+<div class="app-content content ">
+    <!-- General setting Form section start -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Recipes and Nutrition Card Section</h3>
+            <div>
+                <a href="{{route('cms.get', ['section' => 'why_choose_index', 'page' => 'from_the_vet_choose_block']) }}" class="btn btn-primary" type="button">
+                    <span>Card List</span>
+                </a>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <form class="form" method="POST" action="{{  route('cms.createOrUpdateForm', ['page' => 'from_the_vet_choose_block','section' => 'uniquesection', ]) }}"
+                enctype="multipart/form-data">
+                @csrf
+                <input type="text" hidden name="" id="" value="unique">
+                <div class="row">
+                    <div class="col-md-12 col-12">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" id="title" class="form-control"
+                                value="{{ old('title'), $homeBlocks->title ?? 'N/A' }}" placeholder="Welcome Title" name="title" />
+                            @error('title')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                    <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea type="text" id="description" class="form-control"
+                                    placeholder="Home Banner Description" name="description" rows="8" >{{ old('description')}}</textarea>
+                                @error('description')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                    </div>
+
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="image">Welcome Image</label>
+                            <input class="form-control dropify" accept="image/*" type="file" name="image">
+                            @error('image')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <button type="submit" class="btn btn-primary mr-1">Submit</button>
+                        <a href="{{ route('admin.category.index') }}" class="btn btn-outline-danger">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@push('script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
+<script>
+    $('.dropify').dropify();
+
+    //ck-editor
+
+    ClassicEditor
+        .create(document.querySelector('.ck-editor'), {
+            removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'Image', 'ImageCaption', 'ImageStyle',
+                'ImageToolbar', 'ImageUpload', 'MediaEmbed'
+            ],
+            height: '500px'
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    $(".single-select").select2({
+        theme: "classic"
+    });
+    $(document).ajaxStart(function() {
+        NProgress.start();
+    });
+
+    $(document).ajaxComplete(function() {
+        NProgress.done();
+    });
+</script>
+@endpush
+@endsection
