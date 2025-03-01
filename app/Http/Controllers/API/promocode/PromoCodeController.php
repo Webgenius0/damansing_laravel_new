@@ -20,7 +20,6 @@ class PromoCodeController extends Controller
                 'total_price' => 'nullable|numeric'
             ]);
 
-
             $promo = PromoCode::where('code', $request->promo_code)->first();
 
             if (!$promo) {

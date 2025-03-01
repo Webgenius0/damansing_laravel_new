@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('unique_order_id')->unique();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->double('total_amount')->nullable();
             $table->enum('status', ['processing', 'completed', 'cancelled'])->default('processing');
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->string('payment_method')->nullable();
             $table->double('shipping_fee')->nullable(); 
             $table->double('discount')->nullable(); 
+            $table->boolean('is_first_order')->nullable();
             $table->timestamps();
         });
     }

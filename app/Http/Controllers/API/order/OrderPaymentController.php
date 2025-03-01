@@ -6,8 +6,10 @@ use Exception;
 use Stripe\Webhook;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\OrderItem;
 use App\Models\PromoCode;
+use App\Models\BillingInfo;
 use App\Traits\apiresponse;
 use Illuminate\Http\Request;
 use Stripe\Checkout\Session;
@@ -30,7 +32,7 @@ class OrderPaymentController extends Controller
 
             $cart = Cart::with('cart_items.product')
                 ->where('user_id', $user->id)
-                ->first(); // Using first() instead of get()
+                ->first(); 
 
             if (!$cart || $cart->cart_items->isEmpty()) {
                 return $this->error([], 'Cart is empty.', 200);
@@ -75,8 +77,6 @@ class OrderPaymentController extends Controller
             DB::beginTransaction();
 
             $user = auth('api')->user();
-
-
             $cart = Cart::with('cart_items')->where('user_id', $user->id)->first();
 
 
@@ -90,11 +90,13 @@ class OrderPaymentController extends Controller
                 $subtotal += $cartItem->quantity * $cartItem->price;
             }
 
+
             $discount = 0.00;
             $shipping = 00.00;
             $total = $subtotal + $shipping - $discount;
-
             $paymentMethod = $request->payment_method;
+
+            
             $order = Order::create([
                 'user_id' => $user->id,
                 'total_amount' => $total,
@@ -114,6 +116,21 @@ class OrderPaymentController extends Controller
                     'total' => $cartItem->quantity * $cartItem->price
                 ]);
             }
+
+            $cartItem->product->decrement('stock', $cartItem->quantity);
+
+            BillingInfo::create([
+                'order_id' => $order->id,
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'country' => $request->country,
+                'state' => $request->state,
+                'zip_code' => $request->zip_code,
+                'notes' => $request->notes,
+                'different_address' => $request->different_address
+            ]);
 
 
             if ($paymentMethod === 'stripe') {
@@ -157,7 +174,8 @@ class OrderPaymentController extends Controller
                     'metadata' => [
                         'order_id' => $order->id,
                         'user_id' => $user->id
-                    ]
+                    ],
+                    'expires_at' => now()->addMinutes(30)->timestamp,
                 ]);
 
                 $order->update([
@@ -168,6 +186,7 @@ class OrderPaymentController extends Controller
                 DB::commit();
                 return $this->success([
                     'checkout_url' => $checkoutSession->url,
+                    'payment_method' => $paymentMethod
                 ], 'Payment URL generated', 200);
             }
 
@@ -184,6 +203,7 @@ class OrderPaymentController extends Controller
             DB::commit();
             return $this->success([
                 'order_id' => $order->id,
+                'payment_method' => $paymentMethod
             ], 'Order placed successfully', 200);
         } catch (Exception $e) {
 
@@ -275,6 +295,13 @@ class OrderPaymentController extends Controller
         $order = Order::find($orderId);
         if ($order) {
             $order->update(['status' => 'completed']);
+
+        foreach ($order->orderItems as $item) {
+            $product = Product::find($item->product_id);
+            if ($product) {
+                $product->decrement('stock', $item->quantity);
+            }
+        }
         }
 
         Log::info($order->id);
@@ -311,6 +338,13 @@ class OrderPaymentController extends Controller
         $order = Order::find($orderId);
         if ($order) {
             $order->update(['status' => 'cancelled']);
+
+            foreach ($order->orderItems as $item) {
+                $product = Product::find($item->product_id);
+                if ($product) {
+                    $product->increment('stock', $item->quantity);
+                }
+            }
         }
 
         Log::info("PaymentIntent failed for order {$orderId}");
@@ -324,6 +358,13 @@ class OrderPaymentController extends Controller
         $order = Order::find($orderId);
         if ($order) {
             $order->update(['status' => 'completed']);
+
+            foreach ($order->orderItems as $item) {
+                $product = Product::find($item->product_id);
+                if ($product) {
+                    $product->decrement('stock', $item->quantity);
+                }
+            }
         }
 
         $cart = Cart::with('cart_items')->where('user_id', Auth::user()->id)->first();

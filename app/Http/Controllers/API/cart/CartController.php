@@ -4,13 +4,14 @@ namespace App\Http\Controllers\API\cart;
 
 use Exception;
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\CartItem;
 use App\Traits\apiresponse;
 use Illuminate\Http\Request;
+use App\Models\PriceCalculation;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\PriceCalculation;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
@@ -19,36 +20,26 @@ class CartController extends Controller
 
     public function addToCart(Request $request, $id)
     {
-
-
         try {
-
-            
-            $user = auth('api')->user();
-
-            $is_first = $user->orders->isEmpty();
-
-            if ($is_first) {
-                return $this->success($is_first, 'User first product try to purchase like sample product.', 200);
-            }
-
 
             $product = Product::find($id);
 
             if (!$product) {
-                return $this->error('Product does not exist.', 404);
+                return $this->success([],'Product does not exist.', 200);
             }
+
+           
 
             $quantity = (int) $request->input('quantity', 1);
 
             if ($quantity < 1) {
-                return $this->error('Invalid quantity provided.', 400);
+                return $this->success([],'Invalid quantity provided.', 200);
             }
 
 
 
             if ($product->stock < $quantity) {
-                return $this->error('Not enough stock available.', 400);
+                return $this->success([],'Not enough stock available.', 200);
             }
 
             $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
@@ -62,8 +53,6 @@ class CartController extends Controller
             $price_calculation = PriceCalculation::where('dog_weight', '>', $request->dog_weight)
                 ->where('gender', $request->gender)
                 ->where('activity_level', $request->activity_level)->first();
-
-            // dd($price_calculation);
 
 
             if ($cartItem) {
