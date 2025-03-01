@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->integer('quantity')->nullable();
             $table->double('price')->nullable();
+            $table->string('net_weight')->nullable();
+            $table->string('activity')->nullable();
             $table->timestamps();
         });
     }

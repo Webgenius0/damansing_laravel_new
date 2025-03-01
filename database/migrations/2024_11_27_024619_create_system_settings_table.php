@@ -22,6 +22,12 @@ return new class extends Migration
             $table->string('phone_number', 25)->nullable();
             $table->string('whatsapp', 25)->nullable();
             $table->string('email', 250)->nullable();
+            $table->string('admin_title', 250)->nullable();
+            $table->string('system_short_name', 100)->nullable();
+            $table->string('admin_logo', 250)->nullable();
+            $table->string('admin_mini_logo', 250)->nullable();
+            $table->string('admin_favicon', 250)->nullable();
+            $table->string('copyright_text', 500)->nullable();
             $table->foreignId('time_zone')->nullable();
             $table->string('language', 250)->default('en');
             $table->string('country', 250)->nullable();
