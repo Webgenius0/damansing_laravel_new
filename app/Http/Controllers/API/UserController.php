@@ -29,7 +29,7 @@ class UserController extends Controller
         $validation = Validator::make($request->all(), [
             'username' => ['nullable', 'string', 'max:255', 'unique:users,username,' . Auth::id()],
             'email' => ['nullable', 'email', 'max:255', 'unique:users,email,' . Auth::id()],
-            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Ensure avatar is an image
+            // 'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Ensure avatar is an image
             'dob' => ['nullable', 'date'],
             'pet_type' => ['nullable', 'string'],
             'pet_name' => ['nullable', 'string'],
@@ -60,16 +60,16 @@ class UserController extends Controller
             ]));
     
             // Handle avatar upload
-            if ($request->hasFile('avatar')) {
-                // Delete old avatar if it exists
-                if ($user->avatar && file_exists(public_path($user->avatar))) {
-                    File::delete(public_path($user->avatar));
-                }
+            // if ($request->hasFile('avatar')) {
+            //     // Delete old avatar if it exists
+            //     if ($user->avatar && file_exists(public_path($user->avatar))) {
+            //         File::delete(public_path($user->avatar));
+            //     }
     
-                // Upload new avatar
-                $avatarUrl = Helper::fileUpload($request->file('avatar'), 'users/avatars', $user->username . "-avatar-" . time());
-                $user->update(['avatar' => $avatarUrl]);
-            }
+            //     // Upload new avatar
+            //     $avatarUrl = Helper::fileUpload($request->file('avatar'), 'users/avatars', $user->username . "-avatar-" . time());
+            //     $user->update(['avatar' => $avatarUrl]);
+            // }
     
             DB::commit();
     
@@ -80,6 +80,39 @@ class UserController extends Controller
     
         } catch (\Exception $e) {
             DB::rollBack();
+            return $this->error([], $e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Update Avatar
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateAvatar(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Ensure avatar is an image
+        ]);
+
+        if ($validation->fails()) {
+            return $this->error([], $validation->errors()->first(), 422); // Use 422 for validation errors
+        }
+
+        try {
+            $user = Auth::user();
+            if ($user->avatar && file_exists(public_path($user->avatar))) {
+                File::delete(public_path($user->avatar));
+            }
+
+            $avatarUrl = Helper::fileUpload($request->file('avatar'), 'users/avatars', $user->username . "-avatar-" . time());
+            $user->update(['avatar' => $avatarUrl]);
+
+            return $this->success([
+                'avatar' => $user->avatar,
+            ], 'Avatar updated successfully', 200);
+            
+        } catch (\Exception $e) {
             return $this->error([], $e->getMessage(), 400);
         }
     }

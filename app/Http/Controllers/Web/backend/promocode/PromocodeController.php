@@ -41,6 +41,17 @@ class PromocodeController extends Controller
                     return '<h6>'.$data.'</h6>';
                     
                 })
+                ->addColumn('expires_at', function ($data) {
+                    $expires_at = \Carbon\Carbon::parse($data->expires_at);
+                    if ($expires_at->isPast()) {
+                        return '<span class="badge badge-danger">Expired</span>';
+                    }
+                    return $expires_at->format('j F, Y');
+                })
+                ->addColumn('used_count', function ($data) {
+                    return $data->used_count ==  $data->usage_limit ? '<span class="badge badge-danger"> Limit Reached</span>' : $data->used_count;
+                })
+                
                 ->addColumn('action', function ($data) {
                     $viewRoute = route('admin.promocode.edit', ['promocode' => $data->id]);
                     return '<div>
@@ -52,7 +63,7 @@ class PromocodeController extends Controller
                          </button>
                      </div>';
                 })
-                ->rawColumns(['bulk_check', 'image', 'status', 'action'])
+                ->rawColumns(['bulk_check', 'image', 'status', 'action', 'expires_at', 'used_count'])
                 ->make(true);
         }
 

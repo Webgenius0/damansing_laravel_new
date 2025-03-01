@@ -30,6 +30,7 @@
                                 <th>Expires</th>
                                 <th>Code Type</th>
                                 <th>Uses Limit</th>
+                                <th>Total Uses</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -113,6 +114,12 @@
                             {
                                 data: 'usage_limit',
                                 name: 'usage_limit',
+                                orderable: false,
+                                searchable: false
+                            },
+                            {
+                                data: 'used_count',
+                                name: 'used_count',
                                 orderable: false,
                                 searchable: false
                             },

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductSeeder::class);
         $this->call(PromoCodeSeeder::class);
         $this->call(PriceCalculationSeeder::class);
+        $this->call(HowItWorkSeeder::class);
         // User::factory(10)->create();
 
         // User::factory()->create([

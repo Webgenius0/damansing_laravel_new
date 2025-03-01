@@ -90,8 +90,10 @@
                         <div class="form-group">
                             <label for="expires_at">Expires Date </label>
                             <input type="date" id="expires_at" class="form-control"
-                                value="{{ old('expires_at',$promocode->expires_at) }}" placeholder="Expire Date"
+                                value="{{ old('expires_at', \Carbon\Carbon::parse($promocode->expires_at)->format('Y-m-d')) }}"
+                                placeholder="Expire Date"
                                 name="expires_at" />
+
                             @error('expires_at')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -114,8 +116,8 @@
 <script>
     $('.dropify').dropify();
 
-    let today=new Date().toISOString().split('T')[0];
-    document.getElementById('expires_at').setAttribute('min',today);
+    let today = new Date().toISOString().split('T')[0];
+    document.getElementById('expires_at').setAttribute('min', today);
 </script>
 @endpush
 @endsection

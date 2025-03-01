@@ -39,6 +39,16 @@ class ProductController extends Controller
                     $data++;
                     return '<h6>'.$data.'</h6>';
                 })
+                ->addColumn('stock', function ($data) {
+                    if ($data->stock == 0) {
+                        return '<span class="badge badge-danger">Out of Stock</span>';
+                    } elseif ($data->stock <= 5) {
+                        return '<span class="badge badge-warning">Low Stock</span>';
+                    }
+                    return $data->stock;
+                })
+                
+                
                 ->addColumn('action', function ($data) {
                     $viewRoute = route('admin.product.edit', ['product' => $data->id]);
                     return '<div>
@@ -50,7 +60,7 @@ class ProductController extends Controller
                          </button>
                      </div>';
                 })
-                ->rawColumns(['bulk_check', 'image', 'status', 'action'])
+                ->rawColumns(['bulk_check', 'image', 'status', 'action', 'stock'])
                 ->make(true);
         }
         return view('backend.layout.product.index');
