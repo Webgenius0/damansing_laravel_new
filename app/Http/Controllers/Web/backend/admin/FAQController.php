@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\FAQ;
 use App\Models\Cms;
+use Illuminate\Support\Str;
 use Exception;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -61,42 +62,64 @@ class FAQController extends Controller
      */
     public function create()
     {
-        
-        return view('backend.layout.faq.create');
+        $faq = Cms::where('page', 'faq')->where('section', 'faqSection')->first();
+        return view('backend.layout.faq.create', compact('faq'));
 
     }
     /**
      * Store a newly created resource in storage.
      */
 
+    
+
      public function storeOrUpdateFaqTitle(Request $request)
      {
+        
          $request->validate([
              'title' => 'required|string|max:255',
              'description' => 'required|string',
          ]);
      
          try {
-             // Attempt to update or create the FAQ
-             $data = Cms::updateOrCreate(
-                 ['slug' => 'faq'], // Criteria for updating an existing FAQ
-                 [  // Data to update or create
+             // Generate slug from the title
+             $slug = Str::slug($request->title);
+     
+             // Check if the FAQ exists by the generated slug
+             $faq = Cms::where('slug', $slug)->first();
+     
+             if ($faq) {
+                 // Update the existing FAQ
+                 $faq->update([
+                     'title' => $request->title,
+                     'description' => $request->description,
+                     'status' => 'active'
+                 ]);
+     
+                 flash()->success('FAQ updated successfully');
+             } else {
+                 // Create a new FAQ
+                 Cms::create([
+                     'slug' => $slug,
                      'page' => 'faq',
                      'section' => 'faqSection',
                      'title' => $request->title,
-                     'short_description' => $request->description,
+                     'description' => $request->description,
                      'status' => 'active'
-                 ]
-             );
+                 ]);
      
-             flash()->success('FAQ saved successfully');
-             return redirect()->route('faq.index');
+                 flash()->success('FAQ created successfully');
+             }
+     
+             // Redirect to the FAQ index page
+             return redirect()->back();
+     
          } catch (Exception $e) {
-             flash()->error($e->getMessage());
+             // If an error occurs, show a flash error message
+             flash()->error('An error occurred while saving the FAQ.');
              return redirect()->back();
          }
      }
-     
+
     /**
      * Store a newly created resource in storage.
      */

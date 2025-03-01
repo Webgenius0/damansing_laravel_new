@@ -66,6 +66,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
       Route::controller(UserController::class)->group(function () {
         Route::post('updateUser', 'updateUserInfo');
+        Route::post(('/change-avatar'), 'updateAvatar');
       });
       Route::controller(DeliveryAddressController::class)->group(function () {
         Route::post('add-delivery-address', 'UpdateOrCreate');

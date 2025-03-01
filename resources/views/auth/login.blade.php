@@ -26,7 +26,7 @@
                                     class="brand-logo d-flex align-items-center justify-content-center">
                                     <img src="{{ asset($setting->logo ?? 'backend/app-assets/images/logo/logo.png') }}"
                                         alt="logo">
-                                    <h2 class="brand-text text-primary ml-1"><i>{{ $setting->admin_title ?? 'Prayer App' }}</i></h2>
+                                    <h2 class="brand-text text-primary ml-1"><i>{{ $setting->admin_title ?? 'Pet Fresh Kitchen' }}</i></h2>
                                 </a>
 
                                 <form class="auth-login-form mt-2" action="{{ route('admin.login') }}" method="POST">
