@@ -21,50 +21,48 @@ class CartController extends Controller
     public function addToCart(Request $request, $id)
     {
         try {
-
             $product = Product::find($id);
 
             if (!$product) {
-                return $this->success([],'Product does not exist.', 200);
+                return $this->success([], 'Product does not exist.', 200);
             }
-
-           
 
             $quantity = (int) $request->input('quantity', 1);
-
             if ($quantity < 1) {
-                return $this->success([],'Invalid quantity provided.', 200);
+                return $this->success([], 'Invalid quantity provided.', 200);
             }
 
-
-
             if ($product->stock < $quantity) {
-                return $this->success([],'Not enough stock available.', 200);
+                return $this->success([], 'Not enough stock available.', 200);
             }
 
             $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
-
 
             $cartItem = CartItem::where('cart_id', $cart->id)
                 ->where('product_id', $product->id)
                 ->first();
 
-
             $price_calculation = PriceCalculation::where('dog_weight', '>', $request->dog_weight)
                 ->where('gender', $request->gender)
-                ->where('activity_level', $request->activity_level)->first();
+                ->where('activity_level', $request->activity_level)
+                ->first();
 
+            if (!$price_calculation) {
+                return $this->error([], 'Price calculation not found for the given criteria.', 400);
+            }
 
             if ($cartItem) {
+                if (($cartItem->quantity + $quantity) > $product->stock) {
+                    return $this->success([], 'Not enough stock available.', 200);
+                }
 
-                $cartItem->quantity += $request->quantity ?? 1;
+                $cartItem->quantity += $quantity;
                 $cartItem->save();
             } else {
-
                 $cartItem = CartItem::create([
                     'cart_id' => $cart->id,
                     'product_id' => $product->id,
-                    'quantity' => $request->quantity ?? 1,
+                    'quantity' => $quantity,
                     'price' => $price_calculation->price,
                     'net_weight' => $price_calculation->calories,
                     'activity' => $price_calculation->activity_level,
@@ -75,13 +73,14 @@ class CartController extends Controller
                 'product_id' => $product->id,
                 'quantity' => $cartItem->quantity,
                 'price' => $price_calculation->price,
-
             ], 'Product successfully added to cart.', 200);
         } catch (Exception $e) {
+
             Log::error($e->getMessage());
-            return $this->error(['Something went wrong'], $e->getMessage(), 500);
+            return $this->error([], 'Something went wrong', 500);
         }
     }
+
 
     public function updateCartQuantity(Request $request, $id)
     {
@@ -89,37 +88,36 @@ class CartController extends Controller
             $cart = Cart::where('user_id', auth()->id())->first();
 
             if (!$cart) {
-                return $this->error('Cart not found.', 404);
+                return $this->error([], 'Cart not found.', 404);
             }
 
             $cartItem = CartItem::where('cart_id', $cart->id)->where('product_id', $id)->first();
 
             if (!$cartItem) {
-                return $this->error('Product not found in cart.', 404);
+                return $this->error([], 'Product not found in cart.', 404);
             }
 
             $product = Product::find($id);
 
             if (!$product) {
-                return $this->error('Product does not exist.', 404);
+                return $this->error([], 'Product does not exist.', 404);
             }
 
             $action = $request->input('action');
 
             if ($action === 'increase') {
 
-                if ($cartItem->quantity >= $product->stock) {
-                    return $this->error('Not enough stock available.', 400);
+                if ($cartItem->quantity + 1 > $product->stock) {
+                    return $this->error([], 'Not enough stock available.', 400);
                 }
                 $cartItem->increment('quantity');
             } elseif ($action === 'decrease') {
-
                 if ($cartItem->quantity <= 1) {
-                    return $this->error('Quantity cannot be less than 1.', 400);
+                    return $this->error([], 'Quantity cannot be less than 1.', 400);
                 }
                 $cartItem->decrement('quantity');
             } else {
-                return $this->error('Invalid action provided.', 400);
+                return $this->error([], 'Invalid action provided.', 400);
             }
 
             return $this->success([
@@ -127,6 +125,7 @@ class CartController extends Controller
                 'quantity' => $cartItem->quantity,
             ], 'Cart quantity updated.', 200);
         } catch (Exception $e) {
+            
             Log::error($e->getMessage());
             return $this->error([], 'Something went wrong', 500);
         }
