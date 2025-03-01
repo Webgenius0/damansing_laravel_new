@@ -8,7 +8,7 @@
         <!-- General setting Form section start -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Block Section</h3>
+                <h3 class="card-title">Edit Block Section</h3>
                 <div>
                     <a href="{{ route('cms.get', ['section' => 'home_blocks', 'page' => 'homepage']) }}" class="btn btn-primary" type="button">
                         <span>Block List</span>

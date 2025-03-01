@@ -12,6 +12,7 @@ enum Section: string
     case Home_welcome = 'home_welcome';
     case Home_PETS_HELTH = 'home_pets_helth';
     case HOME_PETS_NUTRITION = 'home_pets_nutrition';
+    case HOME_NUTRITION_AND_DELICIOUS = 'home_blocks_edit';
     case HOME_PETS_DELICIOUS = 'home_pets_delicious_meal';
     case HOME_BLOCKS = 'home_blocks';
     case HOME_BLOCKS_CREATE = 'create_home_blocks';
@@ -20,6 +21,7 @@ enum Section: string
     case HOME_CONTACT = 'home_contact';
     case HOME_TESTIMONIAL_INDEX = 'home_testimonial_index';
     case HOME_TESTIMONIAL_CREATE = 'create_testimonial';
+    
 
 
     //Recipies and Nutrition

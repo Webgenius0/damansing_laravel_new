@@ -114,6 +114,7 @@ Route::get('/cms/status/{id}', [CmsController::class, 'status'])->name('cms.stat
     //FAQ Route
     Route::resource('faq', FAQController::class);
     Route::post('faq/status/{id}', [FAQController::class, 'changeStatus'])->name('faq.status');
+    Route::post('faq-title', [FAQController::class, 'storeOrUpdateFaqTitle'])->name('faq.title.update');
 
  //mail settings
  Route::controller(MailSettingsController::class)->group(function () {
@@ -123,6 +124,7 @@ Route::get('/cms/status/{id}', [CmsController::class, 'status'])->name('cms.stat
     Route::get('/stripe/settings', 'stripeSettings')->name('stripe.settings');
     Route::get('/stripe/update', 'stripeSettingUpdate')->name('stripe.update');
 });
+
 
 
 });

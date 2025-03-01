@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web\backend\admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\FAQ;
+use App\Models\Cms;
 use Exception;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -64,7 +65,38 @@ class FAQController extends Controller
         return view('backend.layout.faq.create');
 
     }
+    /**
+     * Store a newly created resource in storage.
+     */
 
+     public function storeOrUpdateFaqTitle(Request $request)
+     {
+         $request->validate([
+             'title' => 'required|string|max:255',
+             'description' => 'required|string',
+         ]);
+     
+         try {
+             // Attempt to update or create the FAQ
+             $data = Cms::updateOrCreate(
+                 ['slug' => 'faq'], // Criteria for updating an existing FAQ
+                 [  // Data to update or create
+                     'page' => 'faq',
+                     'section' => 'faqSection',
+                     'title' => $request->title,
+                     'short_description' => $request->description,
+                     'status' => 'active'
+                 ]
+             );
+     
+             flash()->success('FAQ saved successfully');
+             return redirect()->route('faq.index');
+         } catch (Exception $e) {
+             flash()->error($e->getMessage());
+             return redirect()->back();
+         }
+     }
+     
     /**
      * Store a newly created resource in storage.
      */

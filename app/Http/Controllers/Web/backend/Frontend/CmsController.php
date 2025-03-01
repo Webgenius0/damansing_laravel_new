@@ -242,10 +242,11 @@ public function createOrUpdateForm(CmsRequest $request, $page, $section, $id=nul
 
         if ($isUniqueSection) {
             if ($id && $cmsData) {
-                alert($id);
+                // alert($id);
                 // Update existing record for unique section
                 $cmsData->update([
                     'title' => $validated['title'],
+                    'sub_title' => Arr::get($validated, 'sub_title'),
                     'description' =>  $validated['description'],
                     'btn_text' => Arr::get($validated, 'btn_text'),
                     'btn_url' => Arr::get($validated, 'btn_url'),
@@ -260,7 +261,7 @@ public function createOrUpdateForm(CmsRequest $request, $page, $section, $id=nul
                     'section' => 'create_home_blocks',
                     'page' => $page,
                     'title' => $validated['title'],
-                    
+                    'sub_title' => Arr::get($validated, 'sub_title'),
                     'description' => $validated['description'],
                     'btn_text' => Arr::get($validated, 'btn_text'),
                     'btn_url' => Arr::get($validated, 'btn_url'),
