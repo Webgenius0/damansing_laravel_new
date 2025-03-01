@@ -33,36 +33,43 @@ class CmsRequest extends FormRequest
 
             Section::uniquesection => [
                 'title' => ['nullable', 'string'],
+                'sub_title' => ['nullable', 'string'],
                 'description' => ['nullable'],
                 'btn_text' => ['nullable', 'string'],
                 'btn_url' => ['nullable', 'string'],
                 'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             ],
+
+            Section::HOME_NUTRITION_AND_DELICIOUS => [
+                'title' => ['nullable', 'string'],
+                'description' => ['nullable', 'string'],
+            ],
             // update code contact && testimonial
             Section::HOME_CONTACT => [
-                'title' => ['required', 'string'],  
-                'description' => ['required', 'string'],
+                'title' => ['nullable', 'string'],  
+                'description' => ['nullable', 'string'],
                 'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             ],
             Section::HOME_TESTIMONIAL_CREATE=>[
-                'title' => ['required', 'string'],
-                'description' => ['required', 'string'],
+                'title' => ['nullable', 'string'],
+                'sub_title' => ['nullable', 'string'],
+                'description' => ['nullable', 'string'],
                 'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             ],
 
             Section::Home_PETS_HELTH => [
-                'title' => ['required', 'string'],
+                'title' => ['nullable', 'string'],
                 'btn_text' => ['nullable', 'string'],
                 'btn_url' => ['nullable', 'string'],
-                'description' => ['required', 'string'],
+                'description' => ['nullable', 'string'],
                 'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             ],
 
             Section::HOME_PETS_NUTRITION => [
-                'title' => ['required', 'string'],
+                'title' => ['nullable', 'string'],
                 'btn_text' => ['nullable', 'string'],
                 'btn_url' => ['nullable', 'string'],
-                'description' => ['required', 'string'],
+                'description' => ['nullable', 'string'],
                 'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             ],
 

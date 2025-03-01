@@ -13,106 +13,170 @@ class CmsSeeder extends Seeder
      */
     public function run(): void
     {
-        // Sample data for the CMS table
+
         $cmsData = [
-            // Example for Homepage data
+
             [
                 'page' => 'homepage',
                 'section' => 'home_banner',
-                'slug' => Str::slug('Premium Nutrition fo Healthire, Happier Dogs '),
-                'title' => 'Premium Nutrition fo Healthire, Happier Dogs',             
-                'description' => 'This is the main banner section of the homepage.',              
-                'image' => 'images/home-banner-1.jpg',
-                'btn_text' => 'Learn More',
-                'btn_url' => '/about-us',
+                'title' => 'Premium Nutrition for Healthier, Happier Dogs',
+                'slug' => Str::slug('Premium-Nutrition-fo-Healthire-Happier-Dogs '),
+                'description' => "Our carefully formulated dog food is packed with essential nutrients, vitamins, and minerals to promote optimal health, support strong immune systems, and enhance your dog's energy levels, ensuring they live a happy, active, and fulfilling life.",
+                'image' => 'images/homeBanner.png',
+                'btn_text' => 'Get Free Samples',
+                'btn_url' => '/free-samples',
                 'status' => 'active',
             ],
 
             [
                 'page' => 'homepage',
                 'section' => 'home_welcome',
-                'slug' => Str::slug('Welcome to pert Fresh Kitchen '),
-                'title' => 'Welcome to pert Fresh Kitchen',             
-                'description' => 'This is the welcome section of the homepage.',              
-                'image' => 'images/home-welcome.jpg',                
+                'slug' => Str::slug('Welcome-to-pert-Fresh-Kitchen '),
+                'title' => 'Welcome To Pet
+                            Fresh Kitchen',
+                'description' => 'Welcome to Pet Fresh Kitchen, where we provide your dog with balanced nutrition, premium ingredients, digestive support, and no additives, ensuring a wholesome, natural meal that promotes health, vitality, and overall well-being.',
+                'image' => 'images/homeWelcome.png',
                 'status' => 'active',
+            ],
+            // [
+            //     'page' => 'homepage',
+            //     'section' => 'home_pets_nutration',
+            //     'slug' => Str::slug('Pets Nutration Section'),
+            //     'title' => 'Serve as a meal or mix for added fnutrition boost',
+            //     'description' => 'This is the pets Nutration section of the homepage.',
+            //     'image' => 'images/home-pets-health.jpg',
+            //     'status' => 'active',
+            // ],
+            [
+                'page' => 'homepage',
+                'section' => 'create_home_blocks',
+                'title' => 'Balanced Nutrition',
+                'slug' => Str::slug('Balanced-Nutrition'),
+                'description' => "Provides a complete blend of essential vitamins, minerals, and nutrients that support your dog's overall health, growth, and vitality.",
+                'image' => 'images/Frame.svg',
+                'status' => 'active',
+            ],
+
+            [
+                'page' => 'homepage',
+                'section' => 'create_home_blocks',
+                'title' => 'Premium Ingredients',
+                'slug' => Str::slug('Premium-Ingredients'),
+                'description' => "Made using high-quality, natural ingredients that are carefully selected to deliver a safe, wholesome, and nutritious diet for your dog.",
+                'image' => 'images/Frame (2).svg',
+                'status' => 'active',
+            ],
+
+            [
+                'page' => 'homepage',
+                'section' => 'create_home_blocks',
+                'title' => 'Digestive Support',
+                'slug' => Str::slug('Digestive-Support'),
+                'description' => "Formulated with fiber and probiotics that aid in digestion, promoting a healthy gut and reducing digestive discomfort in dogs.",
+                'image' => 'images/Frame (3).svg',
+                'status' => 'active',
+            ],
+            [
+                'page' => 'homepage',
+                'section' => 'create_home_blocks',
+                'title' => 'No Additives',
+                'slug' => Str::slug('No-Additives'),
+                'description' => "Free from artificial preservatives, colors, and flavors, ensuring a cleaner, more natural, and healthier meal option.",
+                'image' => 'images/Frame (4).svg',
+                'status' => 'active',
+            ],
+
+            [
+                'page' => 'homepage',
+                'section' => 'home_blocks_edit',
+                'title' => 'Nutritious & Delicious Meals',
+                'slug' => Str::slug('Nutritious-&-Delicious-Meals'),
+                'description' => "Providing your dog with the perfect balance of nutrition and taste, ensuring they stay healthy, happy, and full of energy every day for an active and fulfilling lifestyle.",
+                'status' => 'active',
+               
             ],
 
             [
                 'page' => 'homepage',
                 'section' => 'home_pets_helth',
-                'slug' => Str::slug('Pets Health Section'),
-                'title' => 'Take Control of Your Pets Health',              
-                'description' => 'This is the pets health section of the homepage.',              
-                'image' => 'images/home-pets-health.jpg',                
+                'title' => 'Take control of your pet’s health',
+                'slug' => Str::slug('Take-control-of-your-pet’s-health'),
+                'description' => "The process of cooking at lower temperatures & at Slower rates leads to an increase in nutrient in nutrient retention.",
+                'image' => 'images/petsHealth.png',
+                'btn_text' => 'Get Free Samples',
+                'btn_url' => '/Get-Free-Samples',
                 'status' => 'active',
-                'btn_text' => 'Learn More',
-                'btn_url' => '/about-us',
+            ],
+            [
+                'page' => 'homepage',
+                'section' => 'home_pets_nutrition',
+                'title' => 'Serve as a meal or mix for added nutrition boost.',
+                'slug' => Str::slug('Serve-as-a-meal-or-mix-for-added-nutrition-boost.'),
+                'description' => "TFresh Your Way: JustFresh offers gently cooked meals that provide the same complete and balanced nutrition as our fresh frozen recipes. Whether you feed 100% fresh or use it as a delicious topper, it’s the perfect way to show your pup just how much you care.",
+                'image' => 'images/petsNutration.png',
+                'btn_text' => 'Get Free Samples',
+                'btn_url' => '/Get-Free-Samples',
+                'status' => 'active',
             ],
 
             [
                 'page' => 'homepage',
-                'section' => 'home_pets_nutration',
-                'slug' => Str::slug('Pets Nutration Section'),
-                'title' => 'Serve as a meal or mix for added fnutrition boost',             
-                'description' => 'This is the pets Nutration section of the homepage.',              
-                'image' => 'images/home-pets-health.jpg',                
+                'section' => 'home_pets_delicious_meal',
+                'title' => 'Delicious Meals for Happy, Healthy Dogs!',
+                'slug' => Str::slug('Delicious-Meals-for-Happy-Healthy-Dogs!'),
+                'description' => "Treat your four-legged food lover to a wide selection of wholesome, flavorful, and nutritious meals designed to support their health, happiness, and boundless energy every day. Because your furry friend deserves the best in every bite!",
+                'image' => 'images/delciousMeal.png',
+                'btn_text' => 'Shop Now',
+                'btn_url' => '/shop',
                 'status' => 'active',
+            ],
+            //testimonial
+            [
+                'page' => 'homepage_testimonial',
+                'section' => 'create_home_blocks',
+                'title' => 'Hannah Schmitt',
+                'slug' => Str::slug('Hannah-Schmitt'),
+                'sub_title' => 'Quality product',
+                'description' => "“I’ve been searching for a one-stop shop for my dog's food and health needs, and I’ve finally found it! The website is easy to navigate, and the variety of dog food options is impressive.”",
+                'image' => 'images/Ellipse 17.png',
+                'status' => 'active',
+               
             ],
             [
-                'page' => 'homepage',
-                'section' => 'home_pets_advice',
-                'slug' => Str::slug('Balance Nutration'),
-                'title' => 'Balance Nutration',             
-                'description' => 'This is the pets health section of the homepage.',              
-                'image' => 'images/home-pets-health.jpg',                
+                'page' => 'homepage_testimonial',
+                'section' => 'create_home_blocks',
+                'title' => 'Hannah Schmitt',
+                'slug' => Str::slug('Hannah-Schmitt'),
+                'sub_title' => 'Great Service',
+                'description' => "“I’ve been searching for a one-stop shop for my dog's food and health needs, and I’ve finally found it! The website is easy to navigate, and the variety of dog food options is impressive.”",
+                'image' => 'images/Ellipse 16.png',
                 'status' => 'active',
-                
+               
             ],
+            
             [
-                'page' => 'homepage',
-                'section' => 'home_pets_advice',
-                'slug' => Str::slug('Premium Ingredients '),
-                'title' => 'Premium Ingredients',             
-                'description' => 'This is the pets health section of the homepage.',              
-                'image' => 'images/home-pets-health.jpg',                
+                'page' => 'homepage_testimonial',
+                'section' => 'create_home_blocks',
+                'title' => 'Hannah Schmitt',
+                'slug' => Str::slug('Hannah-Schmitt'),
+                'sub_title' => 'Nice Food',
+                'description' => "“I’ve been searching for a one-stop shop for my dog’s food and health needs, and I’ve finally found it! The website is easy to navigate, and the variety of dog food options is impressive",
+                'image' => 'images/Ellipse 18.png',
                 'status' => 'active',
-                
+               
             ],
-            [
-                'page' => 'homepage',
-                'section' => 'home_pets_advice',
-                'slug' => Str::slug('Digestive Support'),
-                'title' => 'Digestive Support ',             
-                'description' => 'This is the pets health section of the homepage.',              
-                'image' => 'images/home-pets-health.jpg',                
-                'status' => 'active',
-                
-            ],
-            [
-                'page' => 'homepage',
-                'section' => 'home_pets_advice',
-                'slug' => Str::slug('No Additives '),
-                'title' => 'No Additives',             
-                'description' => 'This is the pets health section of the homepage.',              
-                'image' => 'images/home-pets-health.jpg',                
-                'status' => 'active',
-                
-            ],
+           //Contact Us
+           [
+            'page' => 'homepage',
+            'section' => 'home_contact',
+            'title' => 'Contact Us',
+            'slug' => Str::slug('Contact-Us'),
+            'description' => "Get in touch with us for any questions or concerns about our dog food products. We're here to help you provide the best for your pet.",
+            'image' => 'images/contactUs.png',
+            'status' => 'active',
+        ],
 
-            [
-                'page' => 'homepage',
-                'section' => 'home_pets_delicious_meals',
-                'slug' => Str::slug('About Us Section'),
-                'title' => 'Delicious Meals fo Happy Healthy Dogs!',
-                
-                'description' => 'We are a leading company in the industry. ',              
-                'image' => 'images/about-us.jpg',
-                'btn_text' => 'Read More',
-                'btn_url' => '/about',              
-                'status' => 'active',
-            ],
-
+            
             // Adding records dynamically for Recipes and Nutrition
             [
                 'page' => 'Recipes_and_Nutrition',
@@ -126,8 +190,8 @@ class CmsSeeder extends Seeder
                 'page' => 'Recipes_and_Nutrition',
                 'section' => 'recipes_ingredients',
                 'slug' => Str::slug('recipies banner'),
-                'title' => 'Fresh Ingredients!',  
-                'description' => 'We are a leading company in the industry. ',                       
+                'title' => 'Fresh Ingredients!',
+                'description' => 'We are a leading company in the industry. ',
                 'status' => 'active',
             ],
             // 6 records with similar structure but different title and metadata
@@ -190,11 +254,11 @@ class CmsSeeder extends Seeder
                 'page' => 'Recipes_and_Nutrition',
                 'section' => 'recipes_nutrition_meals',
                 'slug' => Str::slug('recipies banner'),
-                'title' => 'Find the Perfect, Nutritious Meals for Your Dog!',  
-                'description' => 'We are a leading company in the industry. ',  
+                'title' => 'Find the Perfect, Nutritious Meals for Your Dog!',
+                'description' => 'We are a leading company in the industry. ',
                 'image' => 'images/services.jpg',
                 'btn_text' => 'View Recipes',
-                'btn_url' => '/recipes',                  
+                'btn_url' => '/recipes',
                 'status' => 'active',
             ],
 

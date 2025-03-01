@@ -46,8 +46,8 @@ class PromoCodeSeeder extends Seeder
             ]
         ];
 
-        foreach ($promoCodes as $promo) {
-            PromoCode::create($promo);
-        }
+        // foreach ($promoCodes as $promo) {
+        //     PromoCode::create($promo);
+        // }
     }
 }

@@ -58,6 +58,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Name</th>
                             <th>Title</th>
                             <th>Short Description</th>
                             <th>Status</th>
@@ -107,6 +108,10 @@
                 {
                     data: 'title',
                     name: 'title'
+                },
+                {
+                    data: 'sub_title',
+                    name: 'sub_title'
                 },
                 {
                     data: 'description',
