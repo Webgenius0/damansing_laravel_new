@@ -12,7 +12,6 @@ use App\Models\PromoCode;
 use App\Models\BillingInfo;
 use App\Traits\apiresponse;
 use Illuminate\Http\Request;
-use Stripe\Checkout\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
