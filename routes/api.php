@@ -106,6 +106,7 @@ Route::controller(CmsController::class)->group(function () {
     Route::get('/home-contact','homeContactUs')->name('homeContact');
 
 
+   Route::get('/home-banner','homepageBanner')->name('homeBanner');
     Route::get('/recipesAndNutrition', 'getNutritionAndRecipes')->name('nutritionAndRecipes');
     Route::get('/howItWorks', 'getHowItWorks')->name('howItWorks');
     Route::get('/fromTheVet', 'getFromTheVet')->name('fromTheVet');
