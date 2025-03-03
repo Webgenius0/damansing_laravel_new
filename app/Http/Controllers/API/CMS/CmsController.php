@@ -93,7 +93,7 @@ class CmsController extends Controller
 }
 
 
-    //recipes and nutrition
+    
 
     //nutrition and recipes
     public function getNutritionAndRecipes()
