@@ -50,7 +50,7 @@ class CmsController extends Controller
                 // Add cleaned section data to the page sections
                 $pageSectionsData[] = [
                     'section' => $section,
-                    'data' => $cleanedSectionData(['title', 'content'])
+                    'data' => $cleanedSectionData
                 ];
             }
             // Add the page data (with cleaned sections) to the result
