@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Cms;
 use App\Models\Product;
 use App\Traits\apiresponse;
+use App\Models\Faq;
 
 class CmsController extends Controller
 {
@@ -71,7 +72,7 @@ public function getNutratasusFood()
         return $this->error(null, "Data Not Found");
     }
 
-    $products = Product::take(3)->get(['title', 'price', 'image']); 
+    $products = Product::take(3)->get(['id','title', 'price', 'image']); 
 if ($products->isEmpty()) {
     return $this->error(null, "Food Not Found");
 }
@@ -135,6 +136,36 @@ if ($products->isEmpty()) {
         }
         return $this->success($contactUs, "Data Fetched Successfully");
     }
+
+    //faqWithCms
+
+    public function getFaqWithCms()
+    {
+        
+        $cmsData = Cms::where('page', 'faq')->where('section', 'faqSection')->get(['title', 'description']);  
+        
+      
+        $faqData = Faq::get(['id', 'title', 'short_description']);
+        $faqData->transform(function($item) {
+            $item->short_description = strip_tags($item->short_description); // Remove HTML tags from short_description
+            return $item;
+        });
+      
+        if ($cmsData->isEmpty() && $faqData->isEmpty()) {
+            $message = "Data not Found!";
+            return $this->error($message);
+        }
+    
+    
+        $combinedData = [
+            'cms' => $cmsData,
+            'faq' => $faqData
+        ];
+    
+        
+        return $this->success($combinedData, "Data Fetched Successfully");
+    }
+    
 // Homepage End
     //nutrition and recipes
     public function getNutritionAndRecipes()

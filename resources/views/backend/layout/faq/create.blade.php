@@ -37,7 +37,7 @@
                     <label for="title">Title:</label>
                     <input type="text" name="title"
                         class="form-control @error('title') is-invalid @enderror" required
-                        placeholder="Enter first name here" value="{{ old('title',$faq->title) }}">
+                        placeholder="Enter first name here" value="{{ old('title',$faq->title ?? '') }}">
                     @error('title')
                     <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -48,7 +48,7 @@
                 {{-- short_description input field --}}
                 <div class="form-group">
                     <label for="description">Short Description:</label>
-                    <textarea name="description" class=" form-control @error('description') is-invalid @enderror">{{ old('description',$faq->description) }}</textarea>
+                    <textarea name="description" class=" form-control @error('description') is-invalid @enderror">{{ old('description',$faq->description ?? '') }}</textarea>
                     @error('description')
                     <div class="text-danger">{{ $message }}</div>
                     @enderror

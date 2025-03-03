@@ -104,6 +104,8 @@ Route::controller(CmsController::class)->group(function () {
     Route::get('/home-healthyDogs','healthyDogs')->name('homeHealthyDogs');
     Route::get('/home-testiMonial','getTestimonial')->name('homeTestimonial');
     Route::get('/home-contact','homeContactUs')->name('homeContact');
+    //faq
+    Route::get('/faq', 'getFaqWithCms')->name('faq');
 
 
     Route::get('/recipesAndNutrition', 'getNutritionAndRecipes')->name('nutritionAndRecipes');
