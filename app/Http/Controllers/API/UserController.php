@@ -30,7 +30,7 @@ class UserController extends Controller
             'username' => ['nullable', 'string', 'max:255', 'unique:users,username,' . Auth::id()],
             'email' => ['nullable', 'email', 'max:255', 'unique:users,email,' . Auth::id()],
             // 'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Ensure avatar is an image
-            'dob' => ['nullable', 'date'],
+            'pet_dob' => ['nullable', 'date'],
             'pet_type' => ['nullable', 'string'],
             'pet_name' => ['nullable', 'string'],
             'pet_weight' => ['nullable', 'integer'],
@@ -51,7 +51,7 @@ class UserController extends Controller
             $user->update($request->only([
                 'username',
                 'email',
-                'dob',
+                'pet_dob',
                 'pet_type',
                 'pet_name',
                 'pet_weight',
