@@ -234,6 +234,16 @@ class OrderPaymentController extends Controller
             ]);
 
 
+            if ($order->discount > 0) {
+                $promo = PromoCode::where('code', $order->discount_message)->first();
+    
+                if ($promo) {
+                    $promo->increment('used_count');
+                    Log::info("Promo Code {$promo->code} usage incremented. New count: {$promo->used_count}");
+                }
+            }
+
+
 
             $cart = Cart::with('cart_items')->where('user_id', Auth::user()->id)->first();
             $cart->cart_items()->delete();
@@ -370,6 +380,15 @@ class OrderPaymentController extends Controller
                 $product = Product::find($item->product_id);
                 if ($product) {
                     $product->decrement('stock', $item->quantity);
+                }
+            }
+
+            if ($order->discount > 0) {
+                $promo = PromoCode::where('code', $order->discount_message)->first();
+    
+                if ($promo) {
+                    $promo->increment('used_count');
+                    Log::info("Promo Code {$promo->code} usage incremented. New count: {$promo->used_count}");
                 }
             }
         }
