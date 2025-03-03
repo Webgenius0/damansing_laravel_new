@@ -94,7 +94,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
 Route::controller(CmsController::class)->group(function () {
 
-    Route::get('/homepage', 'gethomePage')->name('homeCms');
+   // Route::get('/homepage', 'gethomePage')->name('homeCms');
+   Route::get('/home-banner','homepageBanner')->name('homeBanner');
     Route::get('/recipesAndNutrition', 'getNutritionAndRecipes')->name('nutritionAndRecipes');
     Route::get('/howItWorks', 'getHowItWorks')->name('howItWorks');
     Route::get('/fromTheVet', 'getFromTheVet')->name('fromTheVet');
