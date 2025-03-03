@@ -33,7 +33,7 @@ class ProductSeeder extends Seeder
                 'category_id' => 2, 
                 'title' => 'Salmon Delight Cat Food',
                 'slug' => Str::slug('Salmon Delight Cat Food'),
-                'stock' => 40,
+                'stock' => 5,
                 'net_weight' => 400, 
                 'pet_type' => 'Cat',
                 'food_details' => 'Delicious salmon-based cat food with omega-3 for healthy fur.',

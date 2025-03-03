@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('otp_expired_at')->nullable();
             $table->string('pet_type')->nullable();
             $table->string('pet_weight')->nullable();
-            $table->string('activity_levbel')->nullable();
+            $table->string('activity_level')->nullable();
             $table->string('pet_nutration')->nullable();
             $table->text('bio')->nullable();
             $table->rememberToken();
