@@ -12,7 +12,6 @@ use App\Traits\apiresponse;
 class CmsController extends Controller
 {
     use apiresponse;
-<<<<<<< HEAD
 //     public function gethomePage()
 // {
 //     // Fetch distinct pages where page is 'homepage'
@@ -86,19 +85,6 @@ class CmsController extends Controller
         ], 404);
     }
 
-=======
-// Homepage Start
-    public function homepageBanner()
-{
-    $banner = Cms::where('page', 'homepage')->where('section', 'home_banner')->get(['title', 'description', 'image', 'btn_text', 'btn_url']);
-
-    if ($banner->isEmpty()) {
-        return response()->json([
-            'status' => false,
-            'message' => 'No Data Found'
-        ], 404);
-    }
-
     return response()->json([
         'status' => true,
         'code' => 200,
@@ -106,34 +92,9 @@ class CmsController extends Controller
         'data' => $banner
     ]);
 }
-    public function homeWelcome()
-    {
-        $homeWelcome = Cms::where('page', 'homepage')->where('section', 'home_welcome')->get(['title', 'description', 'image']);
-    
-    if ($homeWelcome->isEmpty()) {
-        return response()->json([
-            'status' => false,
-            'message' => ' Data Not Found'
-        ], 404);
-    }
-
->>>>>>> dev
-    return response()->json([
-        'status' => true,
-        'code' => 200,
-        'message' => 'Data Fetched Successfully',
-<<<<<<< HEAD
-        'data' => $banner
-    ]);
-}
 
 
     
-=======
-        'data' => $homeWelcome
-    ]);
-}
->>>>>>> dev
 
 public function welcomeArray()
 {
