@@ -96,6 +96,19 @@ Route::controller(CmsController::class)->group(function () {
 
    // Route::get('/homepage', 'gethomePage')->name('homeCms');
    Route::get('/home-banner','homepageBanner')->name('homeBanner');
+<<<<<<< HEAD
+=======
+    Route::get('/home-welcome','homeWelcome')->name('homeWelcome');
+    Route::get('/welcome-array','welcomeArray')->name('welcomeArray');
+    Route::get('/home-Nutritious-Delicious','getNutratasusFood')->name('homeNutritiousDelicious ');
+    Route::get('/home-pets-health','petsHealth')->name('homePetsHealth');
+    Route::get('/home-serveAsMeals','serveAsMeals')->name('homeServeAsMeals');
+    Route::get('/home-healthyDogs','healthyDogs')->name('homeHealthyDogs');
+    Route::get('/home-testiMonial','getTestimonial')->name('homeTestimonial');
+    Route::get('/home-contact','homeContactUs')->name('homeContact');
+
+
+>>>>>>> dev
     Route::get('/recipesAndNutrition', 'getNutritionAndRecipes')->name('nutritionAndRecipes');
     Route::get('/howItWorks', 'getHowItWorks')->name('howItWorks');
     Route::get('/fromTheVet', 'getFromTheVet')->name('fromTheVet');

@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Cms;
+use App\Models\Product;
 use App\Traits\apiresponse;
 
 class CmsController extends Controller
 {
     use apiresponse;
+<<<<<<< HEAD
 //     public function gethomePage()
 // {
 //     // Fetch distinct pages where page is 'homepage'
@@ -84,6 +86,19 @@ class CmsController extends Controller
         ], 404);
     }
 
+=======
+// Homepage Start
+    public function homepageBanner()
+{
+    $banner = Cms::where('page', 'homepage')->where('section', 'home_banner')->get(['title', 'description', 'image', 'btn_text', 'btn_url']);
+
+    if ($banner->isEmpty()) {
+        return response()->json([
+            'status' => false,
+            'message' => 'No Data Found'
+        ], 404);
+    }
+
     return response()->json([
         'status' => true,
         'code' => 200,
@@ -91,10 +106,121 @@ class CmsController extends Controller
         'data' => $banner
     ]);
 }
+    public function homeWelcome()
+    {
+        $homeWelcome = Cms::where('page', 'homepage')->where('section', 'home_welcome')->get(['title', 'description', 'image']);
+    
+    if ($homeWelcome->isEmpty()) {
+        return response()->json([
+            'status' => false,
+            'message' => ' Data Not Found'
+        ], 404);
+    }
+
+>>>>>>> dev
+    return response()->json([
+        'status' => true,
+        'code' => 200,
+        'message' => 'Data Fetched Successfully',
+<<<<<<< HEAD
+        'data' => $banner
+    ]);
+}
 
 
     
+=======
+        'data' => $homeWelcome
+    ]);
+}
+>>>>>>> dev
 
+public function welcomeArray()
+{
+    $homeWelcome = Cms::where('page', 'homepage')->where('section', 'create_home_blocks')
+    ->take(3)
+    ->get(['title', 'description', 'image']);
+    if($homeWelcome->isEmpty()){
+        return $this->error(null, " Data Not Found");
+    }
+    return $this->success($homeWelcome, "Data Fetched Successfully");   
+}
+
+public function getNutratasusFood()
+{
+    $NutritiousAndDelicious = Cms::where('page', 'homepage')
+                                 ->where('section', 'home_blocks_edit')
+                                 ->get(['title', 'description']);
+
+    if ($NutritiousAndDelicious->isEmpty()) {
+        return $this->error(null, "Data Not Found");
+    }
+
+    $products = Product::take(3)->get(['title', 'price', 'image']); 
+if ($products->isEmpty()) {
+    return $this->error(null, "Food Not Found");
+}
+    
+    $responseData = [
+        'cms_data' => $NutritiousAndDelicious,
+        'products' => $products
+    ];
+
+   
+    return $this->success($responseData, "Data Fetched Successfully");
+}
+    
+    public function petsHealth()
+    {
+        $petsHealth = Cms::where('page', 'homepage')->where('section', 'home_pets_helth')->get(['title', 'description', 'image', 'btn_text', 'btn_url']);
+
+        if ($petsHealth->isEmpty()) {
+            return $this->error(null, "Data Not Found");
+        }
+        return $this->success($petsHealth, "Data Fetched Successfully");
+    }
+
+    public function serveAsMeals()
+    {
+        $serveAsMeals = Cms::where('page', 'homepage')->where('section', 'home_pets_nutrition')->get(['title', 'description', 'image', 'btn_text', 'btn_url']);
+
+        if ($serveAsMeals->isEmpty()) {
+            return $this->error(null, "Data Not Found");
+        }
+        return $this->success($serveAsMeals, "Data Fetched Successfully");  
+    }
+
+    public function healthyDogs()
+    {
+        $healthyDogs = Cms::where('page', 'homepage')->where('section', 'home_pets_delicious_meal')->get(['title', 'description', 'image', 'btn_text', 'btn_url']);
+
+        if ($healthyDogs->isEmpty()) {
+            return $this->error(null, "Data Not Found");
+        }
+        return $this->success($healthyDogs, "Data Fetched Successfully");
+    }
+
+    public function getTestimonial()
+    {
+        $testimonial = Cms::where('page', 'homepage_testimonial')->where('section', 'create_home_blocks')
+        ->take(3)
+        ->get(['title', 'sub_title','description', 'image']);
+
+        if ($testimonial->isEmpty()) {
+            return $this->error(null, "Data Not Found");
+        }
+        return $this->success($testimonial, "Data Fetched Successfully");
+    }
+    public function homeContactUs()
+    {
+        $contactUs = Cms::where('page', 'homepage')->where('section', 'home_contact')->get(['title', 'description', 'image', 'btn_text', 'btn_url']);
+
+        if ($contactUs->isEmpty()) {
+            return $this->error(null, "Data Not Found");
+        }
+        return $this->success($contactUs, "Data Fetched Successfully");
+    }
+// Homepage End
     //nutrition and recipes
     public function getNutritionAndRecipes()
     {
