@@ -23,12 +23,13 @@ class CmsRequest extends FormRequest
                 'btn_url' => ['nullable', 'string'],
                 'description' => ['required', 'string'],
                 'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10048'],
+                'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
                
             ],
             Section::Home_welcome => [
                 'title' => ['required', 'string'],
                 'description' => ['required', 'string'],
-                'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
             ],
 
             Section::uniquesection => [
@@ -37,7 +38,7 @@ class CmsRequest extends FormRequest
                 'description' => ['nullable'],
                 'btn_text' => ['nullable', 'string'],
                 'btn_url' => ['nullable', 'string'],
-                'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
             ],
 
             Section::HOME_NUTRITION_AND_DELICIOUS => [

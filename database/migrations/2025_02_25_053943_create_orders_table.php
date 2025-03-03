@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('payment_method')->nullable();
             $table->double('shipping_fee')->nullable(); 
             $table->double('discount')->nullable(); 
+            $table->string('discount_message')->nullable();
             $table->boolean('is_first_order')->nullable();
             $table->timestamps();
         });

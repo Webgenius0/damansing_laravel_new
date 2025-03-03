@@ -16,6 +16,7 @@ class Order extends Model
         'payment_method',
         'shipping_fee',
         'discount',
+        'discount_message',
         'is_first_order'
     ];
 

@@ -20,14 +20,6 @@ Route::middleware('auth')->group(function () {
 
 Route::post('stripe/webhook', [OrderPaymentController::class, 'stripeWebhook']);
 
-// Payment callback routes
-Route::get('/payment/success', [OrderPaymentController::class, 'payment_success'])->name('payment.success');
-Route::get('/payment/cancel', [OrderPaymentController::class, 'payment_cancel'])->name('payment.cancel');
-
-
-
-
-
 
 
 require __DIR__.'/auth.php';

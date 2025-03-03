@@ -19,14 +19,14 @@ class OrderHistoryController extends Controller
         $user = Auth::user();
         $orders = Order::with('user', 'order_items')
             ->where('user_id', $user->id)
-            ->paginate(10); 
-       
+            ->paginate(1);
+
         if ($orders->isEmpty()) {
             return $this->success([], 'No Order History Found.', 200);
         }
 
-      
-        $orders = $orders->map(function ($order) {
+       
+        $formattedOrders = $orders->getCollection()->map(function ($order) {
             return [
                 'order_id' => $order->unique_order_id,
                 'date' => $order->created_at->format('d-m-Y'),
@@ -37,7 +37,6 @@ class OrderHistoryController extends Controller
             ];
         });
 
-    
         $paginationData = [
             'current_page' => $orders->currentPage(),
             'last_page' => $orders->lastPage(),
@@ -48,15 +47,13 @@ class OrderHistoryController extends Controller
         ];
 
         return $this->success([
-            'orders' => $orders, 
-            'pagination' => $paginationData,  
+            'orders' => $formattedOrders, 
+            'pagination' => $paginationData,
         ], 'Order History Retrieved Successfully.', 200);
     } catch (Exception $e) {
-        
         Log::error($e->getMessage());
         return $this->error('An error occurred while retrieving order history.', 500);
     }
 }
 
-    
 }
