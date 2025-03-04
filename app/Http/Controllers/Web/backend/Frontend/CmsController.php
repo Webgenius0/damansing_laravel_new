@@ -91,7 +91,7 @@ public function getCmsForm($page, $section, Request $request, $id = null)
     $viewName = "backend.layout.cms.$page.$section";
     
     if (!view()->exists($viewName)) {
-        $viewName = 'cms.default';
+        $viewName =  abort(404);
     }
     
     return view($viewName, compact('cmsData'));
