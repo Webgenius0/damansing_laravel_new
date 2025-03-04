@@ -271,6 +271,15 @@ if ($products->isEmpty()) {
         return $this->success($notOnPetNutration, "Data Fetched Successfully");
     }
 
+    public function getPetWellness()
+    {
+        $petWellness = Cms::where('page', 'from_the_vet')->where('section', 'pet_wellness_together')->get(['title', 'description', 'image', 'btn_text', 'btn_url']);
+
+        if ($petWellness->isEmpty()) {
+            return $this->error( "Data Not Found");
+        }
+        return $this->success($petWellness, "Data Fetched Successfully");
+    }
 
 
 //From the vet End
@@ -331,58 +340,11 @@ if ($products->isEmpty()) {
     //How It Works
     public function getHowItWorks()
     {
-        // Fetch distinct pages where the page is 'how_it_work'
-        $pages = Cms::select('page')->where('page', 'how_it_work')->distinct()->get();
-    
-        // If no data is found, return an error message
-        if ($pages->isEmpty()) {
-            return $this->error(null, "No Data Found");
-        }
-    
-        $pagesData = [];
-    
-        foreach ($pages as $page) {
-            // Get all distinct sections for the current page
-            $sections = Cms::where('page', $page->page)->distinct()->pluck('section');
-            
-            $pageSectionsData = [];
-    
-            foreach ($sections as $section) {
-                // Get the section data for the current section of the page
-                $sectionData = Cms::where('page', $page->page)->where('section', $section)->get();
-                
-                // Clean each record (strip HTML tags from text fields)
-                $cleanedSectionData = [];
-                foreach ($sectionData as $record) {
-                    $cleanedRecord = [];
-                    foreach ($record->toArray() as $key => $value) {
-                       
-                        if (is_string($value)) {
-                            $cleanedRecord[$key] = strip_tags($value); 
-                        } else {
-                            $cleanedRecord[$key] = $value; 
-                        }
-                    }
-                    
-                    $cleanedSectionData[] = $cleanedRecord;
-                }
-    
-                // Add cleaned section data to the page sections
-                $pageSectionsData[] = [
-                    'section' => $section,
-                    'data' => $cleanedSectionData
-                ];
-            }
-    
-            // Add the page data (with cleaned sections) to the result
-            $pagesData[] = [
-                'page' => $page->page,
-                'sections' => $pageSectionsData
-            ];
-        }
-    
-        // Return the structured data
-        return $this->success($pagesData, "Data Fetched Successfully");
+       $cmsData=Cms::where('page','how_it_work')->where('section','how_it_work_banner')->get(['title','description','image']);
+       if($cmsData->isEmpty()){
+           return $this->error( "Data Not Found");
+       }
+         return $this->success($cmsData, "Data Fetched Successfully");
     }
     
     
@@ -447,58 +409,25 @@ public function getFromTheVet()
 //About Us
 public function getAboutUs()
 {
-    // Fetch distinct pages where page is 'about_us'
-    $pages = Cms::select('page')->where('page', 'about_us')->distinct()->get();
-
-    // If no data is found, return an error message
-    if ($pages->isEmpty()) {
-        return $this->error(null, "No Data Found");
+    $cmsData=Cms::where('page','about_us')->where('section','about_us')->get(['title','description','image']);
+    if($cmsData->isEmpty()){
+        return $this->error( "Data Not Found");
     }
+      return $this->success($cmsData, "Data Fetched Successfully"); 
+   
+}
 
-    $pagesData = [];
-
-    foreach ($pages as $page) {
-        // Get all distinct sections for the current page
-        $sections = Cms::where('page', $page->page)->distinct()->pluck('section');
-        
-        $pageSectionsData = [];
-
-        foreach ($sections as $section) {
-            // Get the section data for the current section of the page
-            $sectionData = Cms::where('page', $page->page)->where('section', $section)->get();
-            
-            // Clean each record (strip HTML tags from text-based fields)
-            $cleanedSectionData = [];
-            foreach ($sectionData as $record) {
-                $cleanedRecord = [];
-                foreach ($record->toArray() as $key => $value) {
-                    // Only strip HTML tags from string fields (text content)
-                    if (is_string($value)) {
-                        $cleanedRecord[$key] = strip_tags($value); // Remove HTML tags from text fields
-                    } else {
-                        $cleanedRecord[$key] = $value; // Leave other fields as they are
-                    }
-                }
-                // Add the cleaned record to the section data
-                $cleanedSectionData[] = $cleanedRecord;
-            }
-
-            // Add cleaned section data to the page sections
-            $pageSectionsData[] = [
-                'section' => $section,
-                'data' => $cleanedSectionData
-            ];
-        }
-
-        // Add the page data (with cleaned sections) to the result
-        $pagesData[] = [
-            'page' => $page->page,
-            'sections' => $pageSectionsData
-        ];
+public function getOurMission()
+{
+    $cmsData=Cms::where('page','about_us')->where('section','our_mission')->get(['title','sub_title','metadata','image','btn_text','btn_url']);
+    $cmsData->transform(function($item) {
+        $item->metadata = strip_tags($item->metadata); // Remove HTML tags from metadata
+        return $item;
+    });
+    if($cmsData->isEmpty()){
+        return $this->error( "Data Not Found");
     }
-
-    // Return the structured data
-    return $this->success($pagesData, "Data Fetched Successfully");
+      return $this->success($cmsData, "Data Fetched Successfully"); 
 }
 
 }
