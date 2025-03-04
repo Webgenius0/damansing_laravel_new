@@ -10,29 +10,39 @@ use App\Traits\apiresponse;
 class FoodController extends Controller
 {
     use apiresponse;
-    public function viewDetails($id)
-    {
-        $food = Product::find($id);
-        if (!$food) {
-            return $this->error([], 'Product not found', 404);
-        }
-        $petTypeNames = [
-            0 => 'puppy',
-            1 => 'adult',
-            2 => 'large',
-        ];
+    public function viewDetails($slug)
+{
+   
+    $food = Product::where('slug', $slug)->first(); 
     
-        if (array_key_exists($food->pet_type, $petTypeNames)) {
-            $food->pet_type = $petTypeNames[$food->pet_type];
-        } else {
-            $food->pet_type = 'unknown';
-        }
-    
-        $food->setHidden(['created_at','updated_at']);
-        return $this->success([
-            'food' => $food,
-        ], 'Fetched Successfully');
+   
+    if (!$food) {
+        return $this->error([], 'Product not found', 404);
     }
+
+    
+    $petTypeNames = [
+        0 => 'puppy',
+        1 => 'adult',
+        2 => 'large',
+    ];
+
+    
+    if (array_key_exists($food->pet_type, $petTypeNames)) {
+        $food->pet_type = $petTypeNames[$food->pet_type];
+    } else {
+        $food->pet_type = 'unknown';
+    }
+
+   
+    $food->setHidden(['created_at', 'updated_at']);
+
+   
+    return $this->success([
+        'food' => $food,
+    ], 'Fetched Successfully');
+}
+
 
     //show all products according to category
 

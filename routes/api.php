@@ -107,6 +107,9 @@ Route::controller(CmsController::class)->group(function () {
     //faq
     Route::get('/faq', 'getFaqWithCms')->name('faq');
 
+    //From The Vet Start
+    Route::get('/fromTheVetBanner', 'getFromTheVetBanner')->name('fromTheVetBanner');
+    Route::get('/notOnPetNutrition', 'getNotOnPetNutration')->name('notOnPetNutrition');
 
     Route::get('/recipesAndNutrition', 'getNutritionAndRecipes')->name('nutritionAndRecipes');
     Route::get('/howItWorks', 'getHowItWorks')->name('howItWorks');
@@ -118,7 +121,7 @@ Route::controller(CmsController::class)->group(function () {
 
 Route::controller(FoodController::class)->group(function () {
 
-    Route::get('view-details/{id}', 'viewDetails')->name('viewDetails');
+    Route::get('view-details/{slug}', 'viewDetails')->name('viewDetails');
     Route::get('/show-all-food', 'showAllFood')->name('showAllFood');
 
 });
