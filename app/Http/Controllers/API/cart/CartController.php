@@ -125,7 +125,7 @@ class CartController extends Controller
                 'quantity' => $cartItem->quantity,
             ], 'Cart quantity updated.', 200);
         } catch (Exception $e) {
-            
+
             Log::error($e->getMessage());
             return $this->error([], 'Something went wrong', 500);
         }
@@ -157,40 +157,49 @@ class CartController extends Controller
 
     public function showCart()
     {
-        $cart = Cart::with('cart_items.product')
-            ->where('user_id', auth()->id())
-            ->first();
+        try {
+            $cart = Cart::with('cart_items.product')
+                ->where('user_id', auth()->id())
+                ->first();
 
 
-        if (!$cart || $cart->cart_items->isEmpty()) {
-            return $this->error('Cart is empty.', 404);
-        }
+            if (!$cart || $cart->cart_items->isEmpty()) {
+                return $this->error('Cart is empty.', 404);
+            }
 
-        $petType = [
-            0 => 'puppy',
-            1 => 'adult',
-            2 => 'large',
-        ];
-
-        $cartItems = $cart->cart_items->map(function ($cartItem) use ($petType) {
-            $product = $cartItem->product;
-
-            $availableQuantity = $cartItem->quantity;
-            $totalPrice = $availableQuantity * $cartItem->price;
-
-            return [
-                'cart_id' => $cartItem->id,
-                'product_id' => $cartItem->product_id,
-                'title' => $product->title,
-                'net_weight' => $product->net_weight . ' Calories',
-                'pet_type' => array_key_exists($product->pet_type, $petType) ? $petType[$product->pet_type] : 'unknown',
-                'price' => $cartItem->price,
-                'quantity' => $availableQuantity,
-                'total_price' => $totalPrice,
-                'product_image' => $product->image ?: asset('images/no-image-placeholder.png')
+            $petType = [
+                0 => 'puppy',
+                1 => 'adult',
+                2 => 'large',
             ];
-        });
 
-        return $this->success($cartItems, 'Cart data retrieved successfully.', 200);
+            $cartItems = $cart->cart_items->map(function ($cartItem) use ($petType) {
+                $product = $cartItem->product;
+
+                $availableQuantity = $cartItem->quantity;
+                $totalPrice = $availableQuantity * $cartItem->price;
+
+                return [
+                    'cart_id' => $cartItem->id,
+                    'product_id' => $cartItem->product_id,
+                    'title' => $product->title,
+                    'net_weight' => $product->net_weight . ' Calories',
+                    'pet_type' => array_key_exists($product->pet_type, $petType) ? $petType[$product->pet_type] : 'unknown',
+                    'price' => $cartItem->price,
+                    'quantity' => $availableQuantity,
+                    'total_price' => $totalPrice,
+                    'product_image' => $product->image ?: asset('images/no-image-placeholder.png')
+                ];
+            });
+
+
+            $subTotal = $cartItems->sum('total_price');
+
+            return $this->success(['cart_items' => $cartItems,'sub_total' => $subTotal], 'Cart data retrieved successfully.', 200);
+        } catch (Exception $e) {
+
+            Log::error($e->getMessage());
+            return $this->error([], 'Something went wrong', 500);
+        }
     }
 }
