@@ -287,7 +287,7 @@ $admin=App\Models\SystemSetting::first();
                             </span>
                         </a>
                     </li>
-                    <li class="{{ (request()->route()->parameter('section') == 'how_it_work' && request()->route()->parameter('page') == 'how_it_work') ? 'active' : '' }}">
+                    <!-- <li class="{{ (request()->route()->parameter('section') == 'how_it_work' && request()->route()->parameter('page') == 'how_it_work') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'how_it_work','section' => 'how_it_work']) }}">
                             <i data-feather="circle"></i>
                             <span class="menu-item text-truncate" data-i18n="Apex">
@@ -352,7 +352,7 @@ $admin=App\Models\SystemSetting::first();
                              Ready To Start
                             </span>
                         </a>
-                    </li>
+                    </li> -->
 
                 </ul>
             </li>
@@ -387,7 +387,7 @@ $admin=App\Models\SystemSetting::first();
                    
 
                     
-                    <li class="{{ (request()->route()->parameter('section') == 'why_choose_index' && request()->route()->parameter('page') == 'from_the_vet_choose_block') ? 'active' : '' }}">
+                    <!-- <li class="{{ (request()->route()->parameter('section') == 'why_choose_index' && request()->route()->parameter('page') == 'from_the_vet_choose_block') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'from_the_vet_choose_block','section' => 'why_choose_index']) }}">
                             <i data-feather="circle"></i>
                             <span class="menu-item text-truncate" data-i18n="Chartjs">
@@ -403,7 +403,7 @@ $admin=App\Models\SystemSetting::first();
                            Fresh Food
                             </span>
                         </a>
-                    </li>
+                    </li> -->
 
                     <li class="{{ (request()->route()->parameter('section') == 'pet_wellness_together' && request()->route()->parameter('page') == 'from_the_vet') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'from_the_vet','section' => 'pet_wellness_together']) }}">
@@ -431,12 +431,12 @@ $admin=App\Models\SystemSetting::first();
                 </a>
                 <ul class="menu-content">
                 <li class="{{ (request()->route()->parameter('section') == 'about_banner' && request()->route()->parameter('page') == 'about_us') ? 'active' : '' }}">
-                        <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'about_us','section' => 'about_banner']) }}">
+                        <!-- <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'about_us','section' => 'about_banner']) }}">
                             <i data-feather="circle"></i>
                             <span class="menu-item text-truncate" data-i18n="Chartjs">
                            About Banner
                             </span>
-                        </a>
+                        </a> -->
                     </li>
                     <li class="{{ (request()->route()->parameter('section') == 'about_us' && request()->route()->parameter('page') == 'about_us') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'about_us','section' => 'about_us']) }}">
@@ -456,14 +456,14 @@ $admin=App\Models\SystemSetting::first();
                         </a>
                     </li>
 
-                    <li class="{{ (request()->route()->parameter('section') == 'c_m_s' && request()->route()->parameter('page') == 'about_us') ? 'active' : '' }}">
+                    <!-- <li class="{{ (request()->route()->parameter('section') == 'c_m_s' && request()->route()->parameter('page') == 'about_us') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'about_us','section' => 'c_m_s']) }}">
                             <i data-feather="circle"></i>
                             <span class="menu-item text-truncate" data-i18n="Chartjs">
                           CMS
                             </span>
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </li>
             <li class=" navigation-header">
