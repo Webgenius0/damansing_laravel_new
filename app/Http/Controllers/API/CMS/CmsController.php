@@ -167,10 +167,37 @@ if ($products->isEmpty()) {
     }
     
 // Homepage End
+
+// From The Vet Start
+    public function getFromTheVetBanner()
+    {
+        $banner = Cms::where('page', 'from_the_vet')->where('section', 'vet_banner')->get(['title', 'description', 'image']);
+
+        if ($banner->isEmpty()) {
+            return $this->error( "Data Not Found");
+        }
+
+        return $this->success($banner, "Data Fetched Successfully");
+    }
+
+    public function getNotOnPetNutration()
+    {
+        $notOnPetNutration = Cms::where('page', 'from_the_vet')->where('section', 'not_pet_nutration')->get(['title', 'description', 'image']);
+
+        if ($notOnPetNutration->isEmpty()) {
+            return $this->error( "Data Not Found");
+        }
+        return $this->success($notOnPetNutration, "Data Fetched Successfully");
+    }
+
+
+
+//From the vet End
+
     //nutrition and recipes
     public function getNutritionAndRecipes()
     {
-        // Fetch all pages where the page is either 'recipesAndNutration' or 'recipesAndNutrationList'
+       
         $nutritionAndRecipes = Cms::whereIn('page', ['recipesAndNutration', 'recipesAndNutrationList'])->get();
         
         // If no data is found, return an error message

@@ -24,7 +24,7 @@ trait apiresponse
         return response()->json($response, $code);
     }
 
-    public function error($error, $message = [], $code = 422)
+    public function error($error, $data = [], $message = [], $code = 404)
     {
       
         if ($message instanceof \Illuminate\Support\MessageBag) {
@@ -39,6 +39,7 @@ trait apiresponse
             'status' => false,
             'message' => $responseMessage,  
             'code' => $code,
+            'data' => $data
         ];
     
         return response()->json($response, $code);

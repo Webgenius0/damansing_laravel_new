@@ -8,7 +8,7 @@
     <!-- General setting Form section start -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Pet Fresh Food Create Form</h3>
+            <h3 class="card-title">Pet Fresh Food Metters Create Form</h3>
             <div>
                 <a href="{{ route('cms.get', ['section' => 'fresh_food_meters_index', 'page' => 'from_the_vet']) }}" class="btn btn-primary" type="button">
                     <span>List</span>
@@ -47,7 +47,7 @@
 
                     <div class="col-md-6 col-12">
                         <div class="form-group">
-                            <label for="image">Banner Image</label>
+                            <label for="image">Image</label>
                             <input class="form-control dropify" value="{{ old('image') }}" accept="image/*" type="file" name="image" >
                             @error('image')
                             <div class="text-danger">{{ $message }}</div>

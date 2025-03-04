@@ -8,7 +8,7 @@
     <!-- General setting Form section start -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Pet Fresh Food Edit Form</h3>
+            <h3 class="card-title">Pet Fresh Food Metters Edit Form</h3>
             <div>
                 <a href="{{ route('cms.get', ['section' => 'fresh_food_meters_index', 'page' => 'from_the_vet']) }}" class="btn btn-primary" type="button">
                     <span>List</span>

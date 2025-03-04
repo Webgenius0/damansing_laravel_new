@@ -51,7 +51,7 @@
                 <!-- Button Positioned at Top Right -->
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('cms.get', ['section' => 'create_freshfood_meters', 'page' => 'from_the_vet']) }}" class="btn btn-primary" type="button">
-                        <span>Add Block</span>
+                        <span>Add Fresh Food Metters</span>
                     </a>
                 </div>
                 <table id="basic_tables" class="table table-striped table-hover">
