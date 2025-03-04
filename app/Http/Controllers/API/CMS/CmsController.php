@@ -167,7 +167,88 @@ if ($products->isEmpty()) {
     }
     
 // Homepage End
+// Recipies and Nutrition Start
+    public function getNutrationBanner()
+    {
+        $banner = Cms::where('page', 'recipesAndNutration')->where('section', 'recipes_banner')->get(['title', 'description', 'image']);
 
+        if ($banner->isEmpty()) {
+            return $this->error( "Data Not Found");
+        }
+
+        return $this->success($banner, "Data Fetched Successfully");
+    }
+
+
+    public function getFreshIngredients()
+    {
+        // Fetch the header data
+        $header = Cms::where('page', 'recipesAndNutration')->where('section', 'card_header')->get(['title', 'description']);
+    
+        // Fetch the fresh ingredients data
+        $freshIngredients = Cms::where('page', 'recipesAndNutration')->where('section', 'create_home_blocks')->get(['title', 'description', 'image']);
+    
+        // Remove HTML tags from the description of freshIngredients
+        $freshIngredients->transform(function($item) {
+            $item->description = strip_tags($item->description); // Remove HTML tags from description
+            return $item;
+        });
+    
+        
+        if ($header->isEmpty() && $freshIngredients->isEmpty()) {
+            $message = "Data Not Found!";
+            return $this->error($message);
+        }
+    
+       
+        $combinedData = [
+            'header' => $header,
+            'ingredientsCard' => $freshIngredients
+        ];
+    
+        // If header is found but fresh ingredients are not found
+        if ($header->isNotEmpty() && $freshIngredients->isEmpty()) {
+            $message = "Fresh Ingredients Not Found!";
+            return $this->error($message);
+        }
+    
+        // If header is not found but fresh ingredients are found
+        if ($header->isEmpty() && $freshIngredients->isNotEmpty()) {
+            $message = "Header Not Found!";
+            return $this->success($combinedData, $message);
+        }
+    
+        // If both header and fresh ingredients are found, return success
+        return $this->success($combinedData, "Data Fetched Successfully");
+    }
+    
+    
+     public function getPerfectNutration()
+     {
+            $perfectNutration = Cms::where('page', 'recipesAndNutration')->where('section', 'perfect_nutration')->get(['title', 'description', 'image', 'btn_text', 'btn_url']);
+
+            if ($perfectNutration->isEmpty()) {
+                return $this->error( "Data Not Found");
+            }
+            return $this->success($perfectNutration, "Data Fetched Successfully");
+     }
+
+     public function getPerfectNutrationList()
+     {
+        $perfectNutrationList = Cms::where('page', 'recipesAndNutrationList')->where('section', 'create_home_blocks')->get(['title', 'description', 'image', 'btn_text', 'btn_url']);
+
+        $perfectNutrationList->transform(function($item) {
+            $item->description = strip_tags($item->description); // Remove HTML tags from description
+            return $item;
+        });
+
+        if ($perfectNutrationList->isEmpty()) {
+            return $this->error( "Data Not Found");
+        }
+        return $this->success($perfectNutrationList, "Data Fetched Successfully");
+     }
+
+// Recipies and Nutrition End
 // From The Vet Start
     public function getFromTheVetBanner()
     {
