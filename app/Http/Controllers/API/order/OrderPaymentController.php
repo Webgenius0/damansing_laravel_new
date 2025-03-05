@@ -93,7 +93,7 @@ class OrderPaymentController extends Controller
         }
     }
 
-  
+
 
 
     public function placeOrder(Request $request)
@@ -104,15 +104,26 @@ class OrderPaymentController extends Controller
             $user = auth('api')->user();
             $cart = Cart::with('cart_items')->where('user_id', $user->id)->first();
 
-
             if (!$cart || $cart->cart_items->isEmpty()) {
                 return $this->success([], 'Cart is empty.', 200);
             }
 
-            $subtotal = $cart->cart_items->sum(fn($item) => $item->quantity * $item->price);
+            // Get selected cart item IDs from the request
+            $selectedCartItemIds = $request->input('selected_cart_items', []);
+
+            // Filter cart items to only include selected items
+            $selectedCartItems = $cart->cart_items->filter(function ($item) use ($selectedCartItemIds) {
+                return in_array($item->id, $selectedCartItemIds);
+            });
+
+            if ($selectedCartItems->isEmpty()) {
+                return $this->success([], 'No items selected for checkout.', 200);
+            }
+
+            $subtotal = $selectedCartItems->sum(fn($item) => $item->quantity * $item->price);
 
             $discount = 0;
-            $discountMesaage = '';
+            $discountMessage = '';
 
             if ($request->has('promo_code')) {
                 $promo = PromoCode::where('code', $request->promo_code)->first();
@@ -120,19 +131,19 @@ class OrderPaymentController extends Controller
                 if ($promo && !$promo->isExpired() && $promo->isAvailable()) {
                     if ($promo->discount_type === 'percentage') {
                         $discount = ($subtotal * $promo->discount_value) / 100;
-                        $discountMesaage = "You get a {$promo->discount_value}% discount.Promo Code: {$promo->code}";
+                        $discountMessage = "You get a {$promo->discount_value}% discount. Promo Code: {$promo->code}";
                     } else {
                         $discount = $promo->discount_value;
-                        $discountMesaage = "You get a \${$promo->discount_value} discount. Promo Code: {$promo->code}";
+                        $discountMessage = "You get a \${$promo->discount_value} discount. Promo Code: {$promo->code}";
                     }
 
                     $discount = min($discount, $subtotal);
                 }
             }
-            $shipping = 00.00;
+
+            $shipping = 0.00;
             $total = $subtotal + $shipping - $discount;
             $paymentMethod = $request->payment_method;
-
 
             $order = Order::create([
                 'user_id' => $user->id,
@@ -141,11 +152,10 @@ class OrderPaymentController extends Controller
                 'payment_method' => $paymentMethod,
                 'shipping_fee' => $shipping,
                 'discount' => $discount,
-                'discount_message' => $discountMesaage
+                'discount_message' => $discountMessage
             ]);
 
-
-            foreach ($cart->cart_items as $cartItem) {
+            foreach ($selectedCartItems as $cartItem) {
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $cartItem->product_id,
@@ -153,9 +163,10 @@ class OrderPaymentController extends Controller
                     'price' => $cartItem->price,
                     'total' => $cartItem->quantity * $cartItem->price
                 ]);
-            }
 
-            $cartItem->product->decrement('stock', $cartItem->quantity);
+                // Decrement product stock
+                $cartItem->product->decrement('stock', $cartItem->quantity);
+            }
 
             BillingInfo::create([
                 'order_id' => $order->id,
@@ -170,14 +181,12 @@ class OrderPaymentController extends Controller
                 'different_address' => $request->different_address
             ]);
 
-
             if ($paymentMethod === 'stripe') {
                 \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
                 $lineItems = [];
 
-
-                foreach ($cart->cart_items as $cartItem) {
+                foreach ($selectedCartItems as $cartItem) {
                     $lineItems[] = [
                         'price_data' => [
                             'currency' => 'inr',
@@ -201,8 +210,6 @@ class OrderPaymentController extends Controller
                     'quantity' => 1,
                 ];
 
-
-
                 $checkoutSession = \Stripe\Checkout\Session::create([
                     'payment_method_types' => ['card'],
                     'line_items' => $lineItems,
@@ -211,7 +218,8 @@ class OrderPaymentController extends Controller
                     'cancel_url'  => 'https://damanasing/payment-cancel',
                     'metadata' => [
                         'order_id' => $order->id,
-                        'user_id' => $user->id
+                        'user_id' => $user->id,
+                        'selected_cart_items' => json_encode($selectedCartItemIds)
                     ],
                     'expires_at' => now()->addMinutes(30)->timestamp,
                 ]);
@@ -220,7 +228,6 @@ class OrderPaymentController extends Controller
                     'checkout_url' => $checkoutSession->url
                 ]);
 
-
                 DB::commit();
                 return $this->success([
                     'checkout_url' => $checkoutSession->url,
@@ -228,25 +235,21 @@ class OrderPaymentController extends Controller
                 ], 'Payment URL generated', 200);
             }
 
-
             $order->update([
                 'status' => 'completed'
             ]);
 
-
             if ($order->discount > 0) {
                 $promo = PromoCode::where('code', $order->discount_message)->first();
-    
+
                 if ($promo) {
                     $promo->increment('used_count');
                     Log::info("Promo Code {$promo->code} usage incremented. New count: {$promo->used_count}");
                 }
             }
 
-
-
-            $cart = Cart::with('cart_items')->where('user_id', Auth::user()->id)->first();
-            $cart->cart_items()->delete();
+            // Delete only the selected cart items
+            $cart->cart_items()->whereIn('id', $selectedCartItemIds)->delete();
 
             DB::commit();
             return $this->success([
@@ -254,7 +257,6 @@ class OrderPaymentController extends Controller
                 'payment_method' => $paymentMethod
             ], 'Order placed successfully', 200);
         } catch (Exception $e) {
-
             DB::rollBack();
             Log::error($e->getMessage());
             return $this->error([$e->getMessage()], $e->getMessage(), 500);
@@ -307,8 +309,9 @@ class OrderPaymentController extends Controller
     protected function handlePaymentIntentSucceeded($paymentIntent)
     {
         $orderId = $paymentIntent->metadata->order_id;
-
         $userId = $paymentIntent->metadata->user_id;
+        $selectedCartItemIds = json_decode($paymentIntent->metadata->selected_cart_items, true);
+
         $order = Order::find($orderId);
         if ($order) {
             $order->update(['status' => 'completed']);
@@ -321,14 +324,10 @@ class OrderPaymentController extends Controller
             }
         }
 
-        Log::info($order->id);
-
         $cart = Cart::with('cart_items')->where('user_id', $userId)->first();
-        $cart->cart_items()->delete();
+        $cart->cart_items()->whereIn('id', $selectedCartItemIds)->delete();
 
-
-
-        Log::info("PaymentIntent succeeded for order .card dele {$orderId}");
+        Log::info("PaymentIntent succeeded for order. Deleted selected cart items for order {$orderId}");
     }
 
 
@@ -385,7 +384,7 @@ class OrderPaymentController extends Controller
 
             if ($order->discount > 0) {
                 $promo = PromoCode::where('code', $order->discount_message)->first();
-    
+
                 if ($promo) {
                     $promo->increment('used_count');
                     Log::info("Promo Code {$promo->code} usage incremented. New count: {$promo->used_count}");
