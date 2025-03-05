@@ -431,12 +431,12 @@ $admin=App\Models\SystemSetting::first();
                 </a>
                 <ul class="menu-content">
                 <li class="{{ (request()->route()->parameter('section') == 'about_banner' && request()->route()->parameter('page') == 'about_us') ? 'active' : '' }}">
-                        <!-- <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'about_us','section' => 'about_banner']) }}">
+                        <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'about_us','section' => 'about_banner']) }}">
                             <i data-feather="circle"></i>
                             <span class="menu-item text-truncate" data-i18n="Chartjs">
                            About Banner
                             </span>
-                        </a> -->
+                        </a>
                     </li>
                     <li class="{{ (request()->route()->parameter('section') == 'about_us' && request()->route()->parameter('page') == 'about_us') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'about_us','section' => 'about_us']) }}">
