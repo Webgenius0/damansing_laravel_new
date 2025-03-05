@@ -417,6 +417,17 @@ public function getFromTheVet()
 }
 
 //About Us
+
+public function getAboutUsBanner()
+{
+    $banner = Cms::where('page', 'about_us')->where('section', 'about_banner')->get(['title', 'description', 'image']);
+
+    if ($banner->isEmpty()) {
+        return $this->error( "Data Not Found");
+    }
+
+    return $this->success($banner, "Data Fetched Successfully");
+}
 public function getAboutUs()
 {
     $cmsData=Cms::where('page','about_us')->where('section','about_us')->get(['title','description','image']);
@@ -426,6 +437,7 @@ public function getAboutUs()
       return $this->success($cmsData, "Data Fetched Successfully"); 
    
 }
+
 
 public function getOurMission()
 {
