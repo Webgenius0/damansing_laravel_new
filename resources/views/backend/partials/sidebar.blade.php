@@ -394,7 +394,7 @@ $admin=App\Models\SystemSetting::first();
                           Why Choose 
                             </span>
                         </a>
-                    </li>
+                    </li> -->
 
                     <li class="{{ (request()->route()->parameter('section') == 'fresh_food_meters_index' && request()->route()->parameter('page') == 'from_the_vet') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'from_the_vet','section' => 'fresh_food_meters_index']) }}">
@@ -403,7 +403,7 @@ $admin=App\Models\SystemSetting::first();
                            Fresh Food
                             </span>
                         </a>
-                    </li> -->
+                    </li>
 
                     <li class="{{ (request()->route()->parameter('section') == 'pet_wellness_together' && request()->route()->parameter('page') == 'from_the_vet') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('cms.get', ['page' => 'from_the_vet','section' => 'pet_wellness_together']) }}">
