@@ -282,6 +282,16 @@ if ($products->isEmpty()) {
     }
 
 
+    public function getFoods()
+    {
+        $foods = Cms::where('page', 'from_the_vet')->where('section', 'create_home_blocks')->get(['title', 'description', 'image']);
+
+        if ($foods->isEmpty()) {
+            return $this->error( "Data Not Found");
+        }
+        return $this->success($foods, "Data Fetched Successfully");
+    }
+
 //From the vet End
 
     //nutrition and recipes
