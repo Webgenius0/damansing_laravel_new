@@ -146,10 +146,10 @@ if ($products->isEmpty()) {
         
       
         $faqData = Faq::get(['id', 'title', 'short_description']);
-        $faqData->transform(function($item) {
-            $item->short_description = strip_tags($item->short_description); // Remove HTML tags from short_description
-            return $item;
-        });
+        // $faqData->transform(function($item) {
+        //     $item->short_description = strip_tags($item->short_description); // Remove HTML tags from short_description
+        //     return $item;
+        // });
       
         if ($cmsData->isEmpty() && $faqData->isEmpty()) {
             $message = "Data not Found!";
@@ -189,10 +189,10 @@ if ($products->isEmpty()) {
         $freshIngredients = Cms::where('page', 'recipesAndNutration')->where('section', 'create_home_blocks')->get(['title', 'description', 'image']);
     
         // Remove HTML tags from the description of freshIngredients
-        $freshIngredients->transform(function($item) {
-            $item->description = strip_tags($item->description); // Remove HTML tags from description
-            return $item;
-        });
+        // $freshIngredients->transform(function($item) {
+        //     $item->description = strip_tags($item->description); // Remove HTML tags from description
+        //     return $item;
+        // });
     
         
         if ($header->isEmpty() && $freshIngredients->isEmpty()) {
@@ -237,10 +237,10 @@ if ($products->isEmpty()) {
      {
         $perfectNutrationList = Cms::where('page', 'recipesAndNutrationList')->where('section', 'create_home_blocks')->get(['title', 'description', 'image', 'btn_text', 'btn_url']);
 
-        $perfectNutrationList->transform(function($item) {
-            $item->description = strip_tags($item->description); // Remove HTML tags from description
-            return $item;
-        });
+        // $perfectNutrationList->transform(function($item) {
+        //     $item->description = strip_tags($item->description); // Remove HTML tags from description
+        //     return $item;
+        // });
 
         if ($perfectNutrationList->isEmpty()) {
             return $this->error( "Data Not Found");
@@ -281,6 +281,16 @@ if ($products->isEmpty()) {
         return $this->success($petWellness, "Data Fetched Successfully");
     }
 
+
+    public function getFoods()
+    {
+        $foods = Cms::where('page', 'from_the_vet')->where('section', 'create_home_blocks')->get(['title', 'description', 'image']);
+
+        if ($foods->isEmpty()) {
+            return $this->error( "Data Not Found");
+        }
+        return $this->success($foods, "Data Fetched Successfully");
+    }
 
 //From the vet End
 
@@ -407,6 +417,17 @@ public function getFromTheVet()
 }
 
 //About Us
+
+public function getAboutUsBanner()
+{
+    $banner = Cms::where('page', 'about_us')->where('section', 'about_banner')->get(['title', 'description', 'image']);
+
+    if ($banner->isEmpty()) {
+        return $this->error( "Data Not Found");
+    }
+
+    return $this->success($banner, "Data Fetched Successfully");
+}
 public function getAboutUs()
 {
     $cmsData=Cms::where('page','about_us')->where('section','about_us')->get(['title','description','image']);
@@ -417,13 +438,14 @@ public function getAboutUs()
    
 }
 
+
 public function getOurMission()
 {
     $cmsData=Cms::where('page','about_us')->where('section','our_mission')->get(['title','sub_title','metadata','image','btn_text','btn_url']);
-    $cmsData->transform(function($item) {
-        $item->metadata = strip_tags($item->metadata); // Remove HTML tags from metadata
-        return $item;
-    });
+    // $cmsData->transform(function($item) {
+    //     $item->metadata = strip_tags($item->metadata); // Remove HTML tags from metadata
+    //     return $item;
+    // });
     if($cmsData->isEmpty()){
         return $this->error( "Data Not Found");
     }

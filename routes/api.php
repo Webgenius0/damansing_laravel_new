@@ -111,6 +111,7 @@ Route::controller(CmsController::class)->group(function () {
     Route::get('/fromTheVetBanner', 'getFromTheVetBanner')->name('fromTheVetBanner');
     Route::get('/notOnPetNutrition', 'getNotOnPetNutration')->name('notOnPetNutrition');
     Route::get('/petWellness', 'getPetWellness')->name('petWellness');
+    Route::get('/getFoods', 'getFoods')->name('getFoods');
 
     // Recipies and Nutrition
     Route::get('/nutrationBanner', 'getNutrationBanner')->name('recipesBanner');
@@ -123,6 +124,7 @@ Route::controller(CmsController::class)->group(function () {
     Route::get('/howItWorks', 'getHowItWorks')->name('howItWorks');
     // Route::get('/fromTheVet', 'getFromTheVet')->name('fromTheVet');
     Route::get('/aboutUs', 'getAboutUs')->name('aboutUs');
+    Route::get(('/aboutUsBanner'), 'getAboutUsBanner')->name('aboutUsBanner');
     Route::get('/ourMission','getOurMission')->name('ourMission');
 });
 
