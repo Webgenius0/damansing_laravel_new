@@ -248,7 +248,7 @@ class OrderPaymentController extends Controller
                 }
             }
 
-            // Delete only the selected cart items
+          
             $cart->cart_items()->whereIn('id', $selectedCartItemIds)->delete();
 
             DB::commit();
