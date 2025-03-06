@@ -46,34 +46,78 @@ class FoodController extends Controller
 
     //show all products according to category
 
-    public function showAllFood()
-    {
-        $type = [
-            '0' => 'puppy',
-            '1' => 'adult',
-            '2' => 'large',
-        ];    
-        $foods = Product::with('category')->get()->groupBy('category_id');
+    // public function showAllFood()
+    // {
+    //     $type = [
+    //         '0' => 'puppy',
+    //         '1' => 'adult',
+    //         '2' => 'large',
+    //     ];    
+    //     $foods = Product::with('category')->get()->groupBy('category_id');
     
-        $data = [];
-        foreach ($foods as $group) {
+    //     $data = [];
+    //     foreach ($foods as $group) {
             
-            $products = $group->map(function ($product) use ($type) {
-                $product->pet_type = $type[$product->pet_type] ?? $product->pet_type;
-                $product->setHidden(['category','created_at','updated_at']);
-                return $product;
-            })->values();
+    //         $products = $group->map(function ($product) use ($type) {
+    //             $product->pet_type = $type[$product->pet_type] ?? $product->pet_type;
+    //             $product->setHidden(['category','created_at','updated_at']);
+    //             return $product;
+    //         })->values();
     
-            $data[] = [
-                'category_name' => $group->first()->category->title,
-                'foods'         => $products,
-            ];
-        }
-        return response()->json([
-            'message' => 'Fetched Successfully',
-            'status'  => 200,
-            'data'    => $data,
-        ]);
+    //         $data[] = [
+    //             'category_name' => $group->first()->category->title,
+    //             'foods'         => $products,
+    //         ];
+    //     }
+    //     return response()->json([
+    //         'message' => 'Fetched Successfully',
+    //         'status'  => 200,
+    //         'data'    => $data,
+    //     ]);
+    // }
+
+    public function showAllFood()
+{
+    $type = [
+        '0' => 'puppy',
+        '1' => 'adult',
+        '2' => 'large',
+    ];    
+   
+    $foods = Product::with('category')->paginate(4);
+
+    $groupedFoods = $foods->groupBy('category_id');
+
+    $data = [];
+    foreach ($groupedFoods as $group) {
+        $products = $group->map(function ($product) use ($type) {
+            $product->pet_type = $type[$product->pet_type] ?? $product->pet_type;
+            $product->setHidden(['category', 'created_at', 'updated_at']);
+            return $product;
+        })->values();
+
+        $data[] = [
+            'category_name' => $group->first()->category->title,
+            'foods'         => $products,
+        ];
     }
+
+    $response = [
+        'data' => $data,
+        'current_page' => $foods->currentPage(),
+        'last_page' => $foods->lastPage(),
+        'per_page' => $foods->perPage(),
+        'total' => $foods->total(),
+        'next_page_url' => $foods->nextPageUrl(),
+        'prev_page_url' => $foods->previousPageUrl(),
+    ];
+
+    return response()->json([
+        'message' => 'Fetched Successfully',
+        'status'  => 200,
+        'data' => $response,
+    ]);
+}
+
     
 }
