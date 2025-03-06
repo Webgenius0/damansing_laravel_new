@@ -98,7 +98,10 @@ class OrderPaymentController extends Controller
 
     public function placeOrder(Request $request)
     {
+
+        dd($request->all());
         try {
+            
             DB::beginTransaction();
 
             $user = auth('api')->user();
@@ -109,6 +112,8 @@ class OrderPaymentController extends Controller
             }
 
            
+
+
             $selectedCartItemIds = $request->input('selected_cart_items', []);
 
           
@@ -123,15 +128,21 @@ class OrderPaymentController extends Controller
             
             $cartItemIds = $cart->cart_items->pluck('id')->toArray();
 
-   
-          
             
             $selectedCartItems = $cart->cart_items->whereIn('id', $selectedCartItemIds);
            
-            if (!$selectedCartItems) {
+            if ($selectedCartItems->isEmpty()) {
                 return $this->success([], 'No items selected for checkout.', 200);
             }
             
+
+
+
+
+
+
+
+
 
             $subtotal = $selectedCartItems->sum(fn($item) => $item->quantity * $item->price);
 
