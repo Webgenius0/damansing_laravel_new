@@ -1,6 +1,13 @@
+@php
+use App\Models\Cms;
+$cmsCount = Cms::where('page', 'homepage')
+->where('section', 'create_home_blocks')
+->count();
+@endphp
+
 @extends('backend.app')
 
-@section('title', 'FAQ Page')
+@section('title', 'Home Block Page')
 
 @push('style')
     <style>
@@ -49,11 +56,36 @@
         <div class="card-body">
             <div class="table-responsive p-4">
                 <!-- Button Positioned at Top Right -->
-                <div class="d-flex justify-content-end">
+                <!-- <div class="d-flex justify-content-end">
                     <a href="{{ route('cms.get', ['section' => 'home_blocks_edit', 'page' => 'homepage']) }}" class="btn btn-primary" type="button">
                         <span>Add Block</span>
                     </a>
+                </div> -->
+
+
+                <div class="d-flex flex-column align-items-end">
+                    <a href="{{ $cmsCount >= 4 ? '#' : route('cms.get', ['section' => 'home_blocks_edit', 'page' => 'homepage' ]) }}"
+                        id="addTestimonialBtn"
+                        class="btn btn-primary"
+                        type="button"
+                        @if($cmsCount>= 4)
+                        aria-disabled="true"
+                        class="btn btn-primary disabled"
+                        tabindex="-1"
+                        style="pointer-events: none; opacity: 0.65;"
+                        @endif>
+                        <span>Add</span>
+                    </a>
+
+                    @if($cmsCount >= 4)
+                    <div class="mt-2">
+                        <small class="text-danger">
+                        You can only insert 4 items. Please delete or edit an existing item to add a new one.
+                        </small>
+                    </div>
+                    @endif
                 </div>
+
                 <table id="basic_tables" class="table table-striped table-hover">
                     <thead>
                         <tr>

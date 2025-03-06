@@ -23,17 +23,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/system/update', 'update')->name('system.update');
         Route::get('/admin/setting', 'adminSetting')->name('admin.setting');
         Route::post('/admin/setting/update', 'adminSettingUpdate')->name('admin.settingupdate');
-
-        
     });
 
     // Route::match(['get', 'post'], '/cms/{section}/{page}', [CmsController::class, 'createOrUpdate'])->name('cms.createOrUpdate');
     Route::get('/backend/layout/cms/{page}/{section}/{id?}', [CmsController::class, 'getCmsForm'])->name('cms.get');
     Route::post('/backend/layout/cms/{page}/{section}/{id?}', [CmsController::class, 'createOrUpdateForm'])->name('cms.createOrUpdateForm');
     // Delete CMS record
-Route::delete('/cms/{id}', [CmsController::class, 'destroy'])->name('cms.delete');
-Route::get('/cms/status/{id}', [CmsController::class, 'status'])->name('cms.status');
-   // Route::get('/homeblocks/edit/{id}', [CmsController::class, 'edit'])->name('cms.allBlocksEdit');
+    Route::delete('/cms/{id}', [CmsController::class, 'destroy'])->name('cms.delete');
+    Route::get('/cms/status/{id}', [CmsController::class, 'status'])->name('cms.status');
+    // Route::get('/homeblocks/edit/{id}', [CmsController::class, 'edit'])->name('cms.allBlocksEdit');
 
     //Route::get('/backend/layout/cms/{page}/{section}/{id}', [CmsController::class, 'allBlocksEdit'])->name('cms.allBlocksEdit');
 
@@ -64,7 +62,6 @@ Route::get('/cms/status/{id}', [CmsController::class, 'status'])->name('cms.stat
         Route::get('/edit/{id}', 'edit')->name('admin.role.edit');
         Route::post('/update/{id}', 'update')->name('admin.role.update');
         Route::delete('/destroy/{id}', 'destroy')->name('admin.role.destroy');
-
     });
 
     // Category Route
@@ -101,9 +98,9 @@ Route::get('/cms/status/{id}', [CmsController::class, 'status'])->name('cms.stat
         Route::get('/status/{id}', 'status')->name('status');
         Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
     });
-    
+
     // Cms
-// routes/web.php
+    // routes/web.php
 
 
     //Dynamic Pages Route
@@ -116,15 +113,12 @@ Route::get('/cms/status/{id}', [CmsController::class, 'status'])->name('cms.stat
     Route::post('faq/status/{id}', [FAQController::class, 'changeStatus'])->name('faq.status');
     Route::post('faq-title', [FAQController::class, 'storeOrUpdateFaqTitle'])->name('faq.title.update');
 
- //mail settings
- Route::controller(MailSettingsController::class)->group(function () {
-    Route::get('/mail/settings', 'index')->name('mail.settings');
-    Route::post('/mail/update', 'mailSettingUpdate')->name('mail.update');
+    //mail settings
+    Route::controller(MailSettingsController::class)->group(function () {
+        Route::get('/mail/settings', 'index')->name('mail.settings');
+        Route::post('/mail/update', 'mailSettingUpdate')->name('mail.update');
 
-    Route::get('/stripe/settings', 'stripeSettings')->name('stripe.settings');
-    Route::get('/stripe/update', 'stripeSettingUpdate')->name('stripe.update');
-});
-
-
-
+        Route::get('/stripe/settings', 'stripeSettings')->name('stripe.settings');
+        Route::get('/stripe/update', 'stripeSettingUpdate')->name('stripe.update');
+    });
 });
