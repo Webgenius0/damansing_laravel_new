@@ -1,44 +1,50 @@
+@php
+use App\Models\Cms;
+$cmsCount = Cms::where('page', 'homepage_testimonial')
+->where('section', 'create_home_blocks')
+->count();
+@endphp
 @extends('backend.app')
 
-@section('title', 'FAQ Page')
+@section('title', 'Testimonial Page')
 
 @push('style')
-    <style>
-        /* Custom DataTable Styling */
-        .dataTables_wrapper {
-            font-family: 'Arial', sans-serif;
-            color: #333;
-        }
+<style>
+    /* Custom DataTable Styling */
+    .dataTables_wrapper {
+        font-family: 'Arial', sans-serif;
+        color: #333;
+    }
 
-        /* Customize buttons and pagination */
-        .action-wrapper {
-            display: flex;
-            gap: 10px;
-        }
+    /* Customize buttons and pagination */
+    .action-wrapper {
+        display: flex;
+        gap: 10px;
+    }
 
-        .action-btn {
-            font-size: 14px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    .action-btn {
+        font-size: 14px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 
-        .edit-btn {
-            color: #fff;
-            background-color: #28a745;
-        }
+    .edit-btn {
+        color: #fff;
+        background-color: #28a745;
+    }
 
-        .delete-btn {
-            color: #fff;
-            background-color: #dc3545;
-        }
+    .delete-btn {
+        color: #fff;
+        background-color: #dc3545;
+    }
 
-        .pagination-container a,
-        .pagination-container span {
-            color: #007bff;
-            font-weight: bold;
-            cursor: pointer;
-        }
-    </style>
+    .pagination-container a,
+    .pagination-container span {
+        color: #007bff;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -49,11 +55,30 @@
         <div class="card-body">
             <div class="table-responsive p-4">
                 <!-- Button Positioned at Top Right -->
-                <div class="d-flex justify-content-end">
-                    <a href="{{ route('cms.get', ['section' => 'create_testimonial', 'page' => 'homepage_testimonial']) }}" class="btn btn-primary" type="button">
-                        <span>Add </span>
+                <div class="d-flex flex-column align-items-end">
+                    <a href="{{ $cmsCount >= 3 ? '#' : route('cms.get', ['section' => 'create_testimonial', 'page' => 'homepage_testimonial']) }}"
+                        id="addTestimonialBtn"
+                        class="btn btn-primary"
+                        type="button"
+                        @if($cmsCount>= 3)
+                        aria-disabled="true"
+                        class="btn btn-primary disabled"
+                        tabindex="-1"
+                        style="pointer-events: none; opacity: 0.65;"
+                        @endif>
+                        <span>Add</span>
                     </a>
+
+                    @if($cmsCount >= 3)
+                    <div class="mt-2">
+                        <small class="text-danger">
+                        You can only insert 3 items. Please delete or edit an existing item to add a new one.
+                        </small>
+                    </div>
+                    @endif
                 </div>
+
+
                 <table id="basic_tables" class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -182,24 +207,26 @@
             }
         });
     }
+
     function showDeleteAlert(id) {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, delete it!',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        deleteRecord(id);
-                    }
-                });
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteRecord(id);
             }
+        });
+    }
+
     function deleteRecord(event, id) {
         event.preventDefault();
-         let deleteUrl = "{{ route('cms.delete', ':id') }}".replace(':id', id);
+        let deleteUrl = "{{ route('cms.delete', ':id') }}".replace(':id', id);
 
         Swal.fire({
             title: 'Are you sure?',
@@ -239,46 +266,46 @@
 
 
     function showStatusChangeAlert(id) {
-                event.preventDefault();
+        event.preventDefault();
 
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'You want to update the status?',
-                    icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        statusChange(id);
-                    }
-                });
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You want to update the status?',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                statusChange(id);
             }
+        });
+    }
 
-            // Status Change
-            function statusChange(id) {
-                let url = "{{ route('cms.status', ':id') }}";
-                $.ajax({
-                    type: "GET",
-                    url: url.replace(':id', id),
-                    success: function(resp) {
-                        console.log(resp);
-                        // Reloade DataTable
-                        $('#data-table').DataTable().ajax.reload();
-                        if (resp.success === true) {
-                            
-                            // show toast message
-                            toastr.success(resp.message);
-                        } else if (resp.errors) {
-                            toastr.error(resp.errors[0]);
-                        } else {
-                            toastr.error(resp.message);
-                        }
-                    },
-                    error: function(error) {
-                        // location.reload();
-                    }
-                })
+    // Status Change
+    function statusChange(id) {
+        let url = "{{ route('cms.status', ':id') }}";
+        $.ajax({
+            type: "GET",
+            url: url.replace(':id', id),
+            success: function(resp) {
+                console.log(resp);
+                // Reloade DataTable
+                $('#data-table').DataTable().ajax.reload();
+                if (resp.success === true) {
+
+                    // show toast message
+                    toastr.success(resp.message);
+                } else if (resp.errors) {
+                    toastr.error(resp.errors[0]);
+                } else {
+                    toastr.error(resp.message);
+                }
+            },
+            error: function(error) {
+                // location.reload();
             }
+        })
+    }
 </script>
 @endpush

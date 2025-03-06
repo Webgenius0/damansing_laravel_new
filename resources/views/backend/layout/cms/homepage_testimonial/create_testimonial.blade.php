@@ -23,7 +23,7 @@
                         <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="title">Name</label>
-                                <input type="text" id="title" class="form-control" value="{{ old('title', $cmsData->title ?? 'N/A') }}" placeholder="Welcome Title" name="title" />
+                                <input type="text" id="title" class="form-control" value="{{ old('title', $cmsData->title ?? '') }}" placeholder="Testimonial name" name="title" />
                                 @error('title')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -32,7 +32,7 @@
                         <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="sub_title">Title</label>
-                                <input type="text" id="sub_title" class="form-control" value="{{ old('sub_title', $cmsData->sub_title ?? 'N/A') }}" placeholder="Welcome Title" name="sub_title" />
+                                <input type="text" id="sub_title" class="form-control" value="{{ old('sub_title', $cmsData->sub_title ?? '') }}" placeholder="Testimonial Title" name="sub_title" />
                                 @error('sub_title')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

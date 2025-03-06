@@ -1,4 +1,9 @@
-@extends('backend.app')
+@php
+use App\Models\Cms;
+$cmsCount = Cms::where('page', 'recipesAndNutrationList')
+->where('section', 'create_home_blocks')
+->count();
+@endphp@extends('backend.app')
 
 @section('title', 'Perfect Nutration List')
 
@@ -49,11 +54,35 @@
         <div class="card-body">
             <div class="table-responsive p-4">
                 <!-- Button Positioned at Top Right -->
-                <div class="d-flex justify-content-end">
+                <!-- <div class="d-flex justify-content-end">
                     <a href="{{ route('cms.get', ['section' => 'create_new_list', 'page' => 'recipesAndNutrationList']) }}" class="btn btn-primary" type="button">
                         <span>Add List</span>
                     </a>
+                </div> -->
+
+                <div class="d-flex flex-column align-items-end">
+                    <a href="{{ $cmsCount >= 3 ? '#' : route('cms.get', ['section' => 'create_new_list', 'page' => 'recipesAndNutrationList']) }}"
+                        id="addTestimonialBtn"
+                        class="btn btn-primary"
+                        type="button"
+                        @if($cmsCount>= 3)
+                        aria-disabled="true"
+                        class="btn btn-primary disabled"
+                        tabindex="-1"
+                        style="pointer-events: none; opacity: 0.65;"
+                        @endif>
+                        <span>Add</span>
+                    </a>
+
+                    @if($cmsCount >= 3)
+                    <div class="mt-2">
+                        <small class="text-danger">
+                            You can only insert 3 items. Please delete or edit an existing item to add a new one.
+                        </small>
+                    </div>
+                    @endif
                 </div>
+
                 <table id="basic_tables" class="table table-striped table-hover">
                     <thead>
                         <tr>

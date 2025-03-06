@@ -226,7 +226,7 @@ public function createOrUpdateForm(CmsRequest $request, $page, $section, $id=nul
     // Check if the section is unique
     $isUniqueSection = ($section == 'uniquesection');
     if ($isUniqueSection) {
-        \Log::info('Skipping enum handling for unique section');
+        Log::info('Skipping enum handling for unique section');
     } else {
         $sectionEnum = Section::from($section); // Convert string to Section enum value
     }
@@ -270,6 +270,7 @@ public function createOrUpdateForm(CmsRequest $request, $page, $section, $id=nul
                 ]);
                 Log::info('New CMS page created successfully for unique section', ['section' => $section]);
                 flash()->success("Page created successfully");
+                return redirect()->back();
             }
         } else {
             // Handle non-unique section logic
@@ -306,6 +307,7 @@ public function createOrUpdateForm(CmsRequest $request, $page, $section, $id=nul
                 Log::info('New CMS page created successfully', ['newCmsPage' => $newCmsPage]);
             }
             flash()->success("$page $section submitted successfully");
+           return redirect()->back();
         }
 
         return redirect()->back();
