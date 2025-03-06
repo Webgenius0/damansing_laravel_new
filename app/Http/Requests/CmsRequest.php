@@ -23,6 +23,7 @@ class CmsRequest extends FormRequest
                 'btn_url' => ['nullable', 'string'],
                 'description' => ['required', 'string'],
                 'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10048'],
+                'image' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
                
             ],
             Section::Home_welcome => [

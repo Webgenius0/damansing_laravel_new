@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Cms;
 use App\Models\Product;
+
 use App\Traits\apiresponse;
 use App\Models\Faq;
 use App\Models\OrderItem;
@@ -152,6 +153,7 @@ class CmsController extends Controller
 
     public function serveAsMeals()
     {
+        // serve as meals
         $serveAsMeals = Cms::where('page', 'homepage')->where('section', 'home_pets_nutrition')->get(['title', 'description', 'image', 'btn_text', 'btn_url']);
 
         if ($serveAsMeals->isEmpty()) {

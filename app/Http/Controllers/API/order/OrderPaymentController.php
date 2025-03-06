@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\API\Order;
 
 use Exception;
+use Stripe\Stripe;
 use Stripe\Webhook;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\CartItem;
 use App\Models\OrderItem;
 use App\Models\PromoCode;
 use App\Models\BillingInfo;
@@ -98,7 +100,9 @@ class OrderPaymentController extends Controller
 
     public function placeOrder(Request $request)
     {
+
         try {
+
             DB::beginTransaction();
 
             $user = auth('api')->user();
@@ -108,54 +112,48 @@ class OrderPaymentController extends Controller
                 return $this->success([], 'Cart is empty.', 200);
             }
 
-            // Get selected cart item IDs from the request
-            $selectedCartItemIds = $request->input('selected_cart_items', []);
+            $subtotal = 0;
 
-            // Filter cart items to only include selected items
-            $selectedCartItems = $cart->cart_items->filter(function ($item) use ($selectedCartItemIds) {
-                return in_array($item->id, $selectedCartItemIds);
-            });
-
-            if ($selectedCartItems->isEmpty()) {
-                return $this->success([], 'No items selected for checkout.', 200);
-            }
-
-            $subtotal = $selectedCartItems->sum(fn($item) => $item->quantity * $item->price);
-
+            $subtotal = 0;
             $discount = 0;
             $discountMessage = '';
+            $shipping = 0.00;
 
             if ($request->has('promo_code')) {
                 $promo = PromoCode::where('code', $request->promo_code)->first();
-
                 if ($promo && !$promo->isExpired() && $promo->isAvailable()) {
-                    if ($promo->discount_type === 'percentage') {
-                        $discount = ($subtotal * $promo->discount_value) / 100;
-                        $discountMessage = "You get a {$promo->discount_value}% discount. Promo Code: {$promo->code}";
-                    } else {
-                        $discount = $promo->discount_value;
-                        $discountMessage = "You get a \${$promo->discount_value} discount. Promo Code: {$promo->code}";
-                    }
-
+                    $discount = ($promo->discount_type === 'percentage')
+                        ? ($subtotal * $promo->discount_value) / 100
+                        : $promo->discount_value;
+                    $discountMessage = "You get a " . ($promo->discount_type === 'percentage'
+                        ? "{$promo->discount_value}%"
+                        : "\${$promo->discount_value}") . " discount. Promo Code: {$promo->code}";
                     $discount = min($discount, $subtotal);
                 }
             }
 
-            $shipping = 0.00;
-            $total = $subtotal + $shipping - $discount;
-            $paymentMethod = $request->payment_method;
 
             $order = Order::create([
                 'user_id' => $user->id,
-                'total_amount' => $total,
+                'total_amount' => 0,
                 'status' => 'processing',
-                'payment_method' => $paymentMethod,
+                'payment_method' => $request->payment_method,
                 'shipping_fee' => $shipping,
                 'discount' => $discount,
                 'discount_message' => $discountMessage
             ]);
 
-            foreach ($selectedCartItems as $cartItem) {
+            $lineItems = [];
+            foreach ($request->selected_cart_items as $selectedCartItem) {
+                $cartItem = CartItem::with('product')->find($selectedCartItem);
+                if (!$cartItem || !$cartItem->product) {
+                    DB::rollBack();
+                    return $this->error([], 'Selected cart item or product not found.', 404);
+                }
+
+                $subtotal += $cartItem->quantity * $cartItem->price;
+                $cartItem->product->decrement('stock', $cartItem->quantity);
+
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $cartItem->product_id,
@@ -164,9 +162,21 @@ class OrderPaymentController extends Controller
                     'total' => $cartItem->quantity * $cartItem->price
                 ]);
 
-                // Decrement product stock
-                $cartItem->product->decrement('stock', $cartItem->quantity);
+                $lineItems[] = [
+                    'price_data' => [
+                        'currency' => 'inr',
+                        'product_data' => ['name' => $cartItem->product->title],
+                        'unit_amount' => $cartItem->price * 100
+                    ],
+                    'quantity' => $cartItem->quantity,
+                ];
             }
+
+            $total = $subtotal + $shipping - $discount;
+            $order->update(['total_amount' => $total]);
+
+
+
 
             BillingInfo::create([
                 'order_id' => $order->id,
@@ -181,30 +191,12 @@ class OrderPaymentController extends Controller
                 'different_address' => $request->different_address
             ]);
 
-            if ($paymentMethod === 'stripe') {
+            if ($request->payment_method === 'stripe') {
                 \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
-                $lineItems = [];
-
-                foreach ($selectedCartItems as $cartItem) {
-                    $lineItems[] = [
-                        'price_data' => [
-                            'currency' => 'inr',
-                            'product_data' => [
-                                'name' => $cartItem->product->title,
-                            ],
-                            'unit_amount' => $cartItem->price * 100
-                        ],
-                        'quantity' => $cartItem->quantity,
-                    ];
-                }
-
                 $lineItems[] = [
                     'price_data' => [
                         'currency' => 'inr',
-                        'product_data' => [
-                            'name' => 'Shipping',
-                        ],
+                        'product_data' => ['name' => 'Shipping'],
                         'unit_amount' => $shipping * 100
                     ],
                     'quantity' => 1,
@@ -215,47 +207,34 @@ class OrderPaymentController extends Controller
                     'line_items' => $lineItems,
                     'mode' => 'payment',
                     'success_url' => 'https://damanasing/payment-success',
-                    'cancel_url'  => 'https://damanasing/payment-cancel',
+                    'cancel_url' => 'https://damanasing/payment-cancel',
                     'metadata' => [
                         'order_id' => $order->id,
                         'user_id' => $user->id,
-                        'selected_cart_items' => json_encode($selectedCartItemIds)
+                        'selected_cart_items' => json_encode($request->selected_cart_items)
                     ],
                     'expires_at' => now()->addMinutes(30)->timestamp,
                 ]);
 
-                $order->update([
-                    'checkout_url' => $checkoutSession->url
-                ]);
-
+                $order->update(['checkout_url' => $checkoutSession->url]);
                 DB::commit();
-                return $this->success([
-                    'checkout_url' => $checkoutSession->url,
-                    'payment_method' => $paymentMethod
-                ], 'Payment URL generated', 200);
+                return $this->success(['checkout_url' => $checkoutSession->url, 'payment_method' => 'stripe'], 'Payment URL generated', 200);
             }
 
-            $order->update([
-                'status' => 'completed'
-            ]);
+            $order->update(['status' => 'completed']);
 
             if ($order->discount > 0) {
                 $promo = PromoCode::where('code', $order->discount_message)->first();
-
                 if ($promo) {
                     $promo->increment('used_count');
                     Log::info("Promo Code {$promo->code} usage incremented. New count: {$promo->used_count}");
                 }
             }
 
-          
-            $cart->cart_items()->whereIn('id', $selectedCartItemIds)->delete();
+            $cart->cart_items()->whereIn('id', $request->selected_cart_items)->delete();
 
             DB::commit();
-            return $this->success([
-                'order_id' => $order->id,
-                'payment_method' => $paymentMethod
-            ], 'Order placed successfully', 200);
+            return $this->success(['order_id' => $order->id, 'payment_method' => $request->payment_method], 'Order placed successfully', 200);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
@@ -266,7 +245,7 @@ class OrderPaymentController extends Controller
 
     public function stripeWebhook(Request $request)
     {
-     
+
         Log::info('stripe webhook is running');
 
         $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
