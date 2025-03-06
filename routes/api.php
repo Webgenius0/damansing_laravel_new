@@ -104,6 +104,9 @@ Route::controller(CmsController::class)->group(function () {
     Route::get('/home-healthyDogs','healthyDogs')->name('homeHealthyDogs');
     Route::get('/home-testiMonial','getTestimonial')->name('homeTestimonial');
     Route::get('/home-contact','homeContactUs')->name('homeContact');
+
+    //get maximum order items
+    Route::get('/get-maximum-order-items','getMaximumOrderProduct')->name('getMaximumOrderProduct');
     //faq
     Route::get('/faq', 'getFaqWithCms')->name('faq');
 
