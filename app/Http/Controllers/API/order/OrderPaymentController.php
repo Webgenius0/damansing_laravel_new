@@ -266,7 +266,7 @@ class OrderPaymentController extends Controller
 
     public function stripeWebhook(Request $request)
     {
-        // change 
+     
         Log::info('stripe webhook is running');
 
         $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
