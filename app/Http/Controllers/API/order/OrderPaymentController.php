@@ -111,22 +111,24 @@ class OrderPaymentController extends Controller
            
             $selectedCartItemIds = $request->input('selected_cart_items', []);
 
+          
+
             if (!is_array($selectedCartItemIds)) {
                 $selectedCartItemIds = (array) $selectedCartItemIds;
             }
             
             $selectedCartItemIds = array_map('intval', $selectedCartItemIds);
             
-            Log::info("Processed selected cart item IDs:", ['selectedCartItemIds' => $selectedCartItemIds]);
+    
             
             $cartItemIds = $cart->cart_items->pluck('id')->toArray();
-            Log::info("Cart item IDs in DB:", ['cartItemIds' => $cartItemIds]);
+
+   
+          
             
             $selectedCartItems = $cart->cart_items->whereIn('id', $selectedCartItemIds);
-            
-            Log::info("Filtered selected cart items:", ['selectedCartItems' => $selectedCartItems->pluck('id')->toArray()]);
-            
-            if ($selectedCartItems->isEmpty()) {
+           
+            if (!$selectedCartItems) {
                 return $this->success([], 'No items selected for checkout.', 200);
             }
             
