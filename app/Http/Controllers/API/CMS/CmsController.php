@@ -202,6 +202,7 @@ if ($products->isEmpty()) {
 
     public function serveAsMeals()
     {
+        // serve as meals
         $serveAsMeals = Cms::where('page', 'homepage')->where('section', 'home_pets_nutrition')->get(['title', 'description', 'image', 'btn_text', 'btn_url']);
 
         if ($serveAsMeals->isEmpty()) {
