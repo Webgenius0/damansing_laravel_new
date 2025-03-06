@@ -9,6 +9,7 @@ use App\Models\Cms;
 use App\Models\Product;
 use App\Traits\apiresponse;
 use App\Models\Faq;
+use App\Models\OrderItem;
 
 class CmsController extends Controller
 {
@@ -32,6 +33,59 @@ class CmsController extends Controller
         'data' => $banner
     ]);
 }
+    //get meximum order's product
+    public function getMaximumOrderProduct()
+{
+    // Query to get the top 3 products with the maximum number of orders (highest quantity ordered)
+    $maxOrderedProducts = OrderItem::select('product_id', \DB::raw('SUM(quantity) as total_quantity'))
+        ->groupBy('product_id')
+        ->orderByDesc('total_quantity') 
+        ->take(3) 
+        ->get(); 
+
+    // If no products are found, return a response with a message
+    if ($maxOrderedProducts->isEmpty()) {
+        return response()->json([
+            'message' => 'No orders found.',
+        ], 404);
+    }
+
+    // Fetch product details for the top 3 products
+    $products = Product::whereIn('id', $maxOrderedProducts->pluck('product_id'))
+        ->get()
+        ->makeHidden(['created_at', 'updated_at']); // Hide 'created_at' and 'updated_at'
+
+    // If no products are found after fetching product details, return a response
+    if ($products->isEmpty()) {
+        return response()->json([
+            'message' => 'Products not found.',
+        ], 404);
+    }
+
+    // Return the products along with the total quantity ordered for each product
+    return response()->json([
+        'status' => true,
+        'message' => 'Product details fetched successfully.',
+        'code' => 200,
+        'data' => $products->map(function ($product) use ($maxOrderedProducts) {
+            // Find the total quantity for the product from the original result
+            $totalQuantity = $maxOrderedProducts->firstWhere('product_id', $product->id)->total_quantity;
+
+            return [
+                'id' => $product->id,
+                'name' => $product->title,
+                'slug' => $product->slug,
+                'description' => $product->food_details,
+                'price' => $product->price,
+                'image' => $product->image,
+                'total_quantity' => $totalQuantity,
+            ];
+        }),
+    ]);
+}
+
+
+
     public function homeWelcome()
     {
         $homeWelcome = Cms::where('page', 'homepage')->where('section', 'home_welcome')->get(['title', 'description', 'image']);
