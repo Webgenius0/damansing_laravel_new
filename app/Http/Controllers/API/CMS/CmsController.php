@@ -127,7 +127,7 @@ class CmsController extends Controller
             return $this->error(null, "Data Not Found");
         }
 
-        $products = Product::take(3)->get(['id', 'title', 'price', 'image']);
+        $products = Product::take(3)->get(['id', 'title','slug', 'price', 'image']);
         if ($products->isEmpty()) {
             return $this->error(null, "Food Not Found");
         }

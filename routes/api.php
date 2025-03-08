@@ -137,6 +137,10 @@ Route::controller(FoodController::class)->group(function () {
     Route::get('view-details/{slug}', 'viewDetails')->name('viewDetails');
     Route::get('/show-all-food', 'showAllFood')->name('showAllFood');
 
+    // show Vegetarian Foods
+    Route::get('/show-vegetarian-foods', 'showVegetarianFoods')->name('showVegetarianFoods');
+    Route::get('/show-non-vegetarian-foods', 'showNonVegetarianFoods')->name('showNonVegetarianFoods');
+
 });
 
 Route::get('/dynamicPages',[DynamicPageController::class,'dynamicPages'])->name('dynamicPages.index');
