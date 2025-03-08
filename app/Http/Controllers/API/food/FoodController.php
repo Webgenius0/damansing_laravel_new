@@ -131,7 +131,7 @@ class FoodController extends Controller
             '2' => 'large',
         ];
       
-        $vegetarianCategoryId = Category::where('title', 'Vegetarian')->pluck('id')->first();
+        $vegetarianCategoryId = Category::where('title', 'vegeterian')->pluck('id')->first();
 
         $foods = Product::where('category_id', $vegetarianCategoryId)
                         ->whereNotNull('category_id') 
@@ -171,7 +171,7 @@ class FoodController extends Controller
             '2' => 'large',
         ];
       
-        $nonVegetarianCategoryId = Category::where('title', 'non-vegetarian')->pluck('id')->first();
+        $nonVegetarianCategoryId = Category::where('title', 'non-vegeterian')->pluck('id')->first();
 
         $foods = Product::where('category_id', $nonVegetarianCategoryId)
                         ->whereNotNull('category_id') 
